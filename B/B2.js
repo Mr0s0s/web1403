@@ -24,7 +24,7 @@ use("sum", function(a, b){
 use("multiply", function(a, b){
     return a * b
 });
-use("TAGHSIM", function(a, b){
+use("div", function(a, b){
     return a / b
 });
 let errort = false;

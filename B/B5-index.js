@@ -21,7 +21,8 @@ a.a("print", function(contInputs){
         Email: contInputs[4]
     });
 });
-a.a("saveRecord", function(contInputs){
+
+a.a("saverd", function(contInputs){
     fs.writeFile('myDatabase.txt', contInputs[1], {encoding:'utf8'}, function(error){
         if(error){
             console.log('ERROR:', error);
@@ -31,4 +32,5 @@ a.a("saveRecord", function(contInputs){
         }
     })
 });
+
 a.start();

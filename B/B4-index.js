@@ -12,7 +12,7 @@ a.a("multiply", function(contInputs){
 a.a("div", function(contInputs){
     console.log(a.parseInput(contInputs[1]) / a.parseInput(contInputs[2]));
 });
-a.a("printRecord", function(contInputs){
+a.a("print", function(contInputs){
     console.log({
         name: contInputs[1],
         family: contInputs[2],

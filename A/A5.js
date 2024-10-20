@@ -1,29 +1,28 @@
-let input = Process.argv.slice(2);
-let commend = input[0];
-let control = [];
-console.log('minus','sum','multiply')
-function parseInt(input){
-    return parseInt(input);
-}
-function addcontrol(name,func){
-    let x = {
-        commend:name,function:func
-    };
-    control.push(x)
-;}
-
-addcontrol("minus",function(a,b){
-    return a-b;
-});
-addcontrol("sum",function(a,b){
-    return a+b;
-});
-addcontrol("multiply",function(a,b){
-    return a*b;
-});
-
-for(let itam of control){
-    if(itam.commend === commend){
-        console.log(itam.function(parseInput(input[1]),parseInput(input[2])));
+let inputs=process.argv.slice(2);
+let commend=inputs[0];
+let control = [
+    {
+        name: "sum",
+        ciled: function sum(a,b){
+            return parseInt(a)+parseInt(b);
+        }  
+    },
+    {
+        name: "multiply",
+        ciled: function multiply(a,b){
+            return parseInt(a)*parseInt(b);
+        }
+    },
+    {
+        name: "minus",
+        ciled: function minus(a,b){
+            return parseInt(a)-parseInt(b);
+        }
     }
-}
+]
+
+control.forEach( function(item) {
+    if(commend === item.name){
+        console.log(item.ciled(inputs[1],inputs[2]))
+    }
+});

@@ -26,7 +26,7 @@ function start(){
         }
     }
     if(!errort){
-        console.log('Command Not Found.');
+        console.log('NOT FOUND.');
     }
 }
 
