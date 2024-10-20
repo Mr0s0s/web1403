@@ -14,18 +14,17 @@ cmd.use("multiply", function(contInputs){
 cmd.use("div", function(contInputs){
     console.log(cmd.parseInput(contInputs[1]) / cmd.parseInput(contInputs[2]));
 });
-cmd.use("printRecord", function(contInputs){
+cmd.use("print", function(contInputs){
     console.log({
-        name: contInputs[1],
-        family: contInputs[2],
-        age: contInputs[3],
-        email: contInputs[4]
+        Name: contInputs[1],
+        Family: contInputs[2],
+        Age: contInputs[3],
+        Email: contInputs[4]
     });
 });
 
 
-
-cmd.use("sr", function(contInputs){
+cmd.use("save", function(contInputs){
     fs.writeFile('myDatabase.txt', contInputs[1], {encoding:'utf8'}, function(error){
         if(error){
             console.log('ERROR:', error);
@@ -36,12 +35,12 @@ cmd.use("sr", function(contInputs){
     })
 });
 
-cmd.use("sr2", function(contInputs){
+cmd.use("save2", function(contInputs){
     let z = {
-        ek: contInputs[1],
-        do: contInputs[2],
-        sa: contInputs[3],
-        chahr: contInputs[4]
+        one: contInputs[1],
+        two: contInputs[2],
+        three : contInputs[3],
+        four: contInputs[4]
     }
     z = JSON.stringify(z)
     fs.writeFile('myDatabase.txt',z, {encoding:'utf8'}, function(error){
