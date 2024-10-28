@@ -1,31 +1,29 @@
-const { Console } = require('console');
-let cmd = require('./C1-cmd.js');
+let index = require('./C1-cmd.js');
 let fs = require('fs');
 
-cmd.use("minus", function(contInputs){
-    console.log(cmd.parseInput(contInputs[1]) - cmd.parseInput(contInputs[2]));
+index.a("minus", function(contInputs){
+    console.log(index.parseInput(contInputs[1]) - index.parseInput(contInputs[2]));
 });
-cmd.use("sum", function(contInputs){
-    console.log(cmd.parseInput(contInputs[1]) + cmd.parseInput(contInputs[2]));
+index.a("sum", function(contInputs){
+    console.log(index.parseInput(contInputs[1]) + index.parseInput(contInputs[2]));
 });
-cmd.use("multiply", function(contInputs){
-    console.log(cmd.parseInput(contInputs[1]) * cmd.parseInput(contInputs[2]));
+index.a("multiply", function(contInputs){
+    console.log(index.parseInput(contInputs[1]) * index.parseInput(contInputs[2]));
 });
-cmd.use("div", function(contInputs){
-    console.log(cmd.parseInput(contInputs[1]) / cmd.parseInput(contInputs[2]));
+index.a("div", function(contInputs){
+    console.log(index.parseInput(contInputs[1]) / index.parseInput(contInputs[2]));
 });
-cmd.use("printRecord", function(contInputs){
+
+index.a("print", function(contInputs){
     console.log({
-        name: contInputs[1],
-        family: contInputs[2],
-        age: contInputs[3],
-        email: contInputs[4]
+        Name: contInputs[1],
+        Family: contInputs[2],
+        Age: (index.parseInput(contInputs[3])),
+        Email: (contInputs[4] + "@gmail.com")
     });
 });
 
-
-
-cmd.use("sr", function(contInputs){
+index.a("sr", function(contInputs){
     fs.writeFile('myDatabase.txt', contInputs[1], {encoding:'utf8'}, function(error){
         if(error){
             console.log('ERROR:', error);
@@ -36,6 +34,4 @@ cmd.use("sr", function(contInputs){
     })
 });
 
-
-
-cmd.start();
+index.start();

@@ -29,7 +29,7 @@ index.a("save", function (contInputs) {
         Family: contInputs[2],
         Age: contInputs[3]
     }
-    fs.writeFile('Database_save1.txt', JSON.stringify(newsave), 'utf8', function (error) {
+    fs.writeFile('save1.txt', JSON.stringify(newsave), 'utf8', function (error) {
         if (error) {
             console.log("ERROR:", error);
         } else {
@@ -45,7 +45,7 @@ index.a("save2", function (contsave2) {
         three: contsave2[3]
     }
     savedata = JSON.stringify(savedata);
-    fs.writeFile('Database_save2.txt', savedata, { encoding: 'utf8' }, function (error, save2) {
+    fs.writeFile('save2.txt', savedata, { encoding: 'utf8' }, function (error, save2) {
         if (error) {
             console.log("Cant Save File", error);
         }
@@ -113,7 +113,7 @@ index.a("saveobj", function (contInputs) {
             let database;
             database = getData.data + newObj.data;
 
-            fs.writeFile('Database_saveobj.txt', JSON.stringify(database), { encoding: 'utf8' }, function (err, data) {
+            fs.writeFile('saveobj.txt', JSON.stringify(database), { encoding: 'utf8' }, function (err, data) {
                 if (err) {
                     console.log("ERROR:", err);
                 } else {

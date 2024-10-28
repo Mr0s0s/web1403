@@ -1,36 +1,33 @@
-let inputs = process.argv.slice(2);
-let command = inputs[0];
-
+let inputs = [];
+inputs = process.argv.slice(2);
+let commend = inputs[0];
 let controllers = [];
 
-function parseInput(input){
-    return parseInt(input);
-}
 
-function use(name, func){
+function use(name, func) {
     let x = {
-        command: name,
+        commend: name,
         function: func
     };
-
     controllers.push(x);
 }
 
-use("minus", function(a, b){
-    return a - b
+use("sum", function (a, b) {
+    return a + b;
 });
-use("sum", function(a, b){
-    return a + b
+use("minus", function (a, b) {
+    return a - b;
 });
-use("multiply", function(a, b){
-    return a * b
+use("div", function (a, b) {
+    return a / b;
 });
-use("div", function(a, b){
-    return a / b
+use("multiply", function (a, b) {
+    return a * b;
 });
 
-for(let item of controllers){
-    if(item.command === command){
-        console.log(item.function(parseInput(inputs[1]), parseInput(inputs[2])));
+
+for (let itam of controllers) {
+    if (commend === itam.commend) {
+        console.log(itam.function(parseInt(inputs[1]), parseInt(inputs[2])));
     }
 }

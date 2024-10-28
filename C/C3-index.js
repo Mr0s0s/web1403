@@ -1,72 +1,66 @@
-const { Console } = require('console');
-let cmd = require('./C1-cmd.js');
+let index = require('./C1-cmd.js');
 let fs = require('fs');
 
-cmd.use("minus", function(contInputs){
-    console.log(cmd.parseInput(contInputs[1]) - cmd.parseInput(contInputs[2]));
+index.a("minus", function (contInputs) {
+    console.log(index.parseInput(contInputs[1]) - index.parseInput(contInputs[2]));
 });
-cmd.use("sum", function(contInputs){
-    console.log(cmd.parseInput(contInputs[1]) + cmd.parseInput(contInputs[2]));
+index.a("sum", function (contInputs) {
+    console.log(index.parseInput(contInputs[1]) + index.parseInput(contInputs[2]));
 });
-cmd.use("multiply", function(contInputs){
-    console.log(cmd.parseInput(contInputs[1]) * cmd.parseInput(contInputs[2]));
+index.a("multiply", function (contInputs) {
+    console.log(index.parseInput(contInputs[1]) * index.parseInput(contInputs[2]));
 });
-cmd.use("div", function(contInputs){
-    console.log(cmd.parseInput(contInputs[1]) / cmd.parseInput(contInputs[2]));
+index.a("div", function (contInputs) {
+    console.log(index.parseInput(contInputs[1]) / index.parseInput(contInputs[2]));
 });
-cmd.use("printRecord", function(contInputs){
+
+index.a("print", function (contInputs) {
     console.log({
         name: contInputs[1],
         family: contInputs[2],
-        age: contInputs[3],
+        age: (index.parseInput(contInputs[3])),
         email: contInputs[4]
     });
 });
 
-
-
-cmd.use("sr", function(contInputs){
-    fs.writeFile('myDatabase.txt', contInputs[1], {encoding:'utf8'}, function(error){
-        if(error){
+index.a("save", function (contInputs) {
+    fs.writeFile('myDatabase.txt', contInputs[1], { encoding: 'utf8' }, function (error) {
+        if (error) {
             console.log('ERROR:', error);
         }
-        else{
+        else {
             console.log('File Saved.')
         }
     })
 });
 
-cmd.use("sr2", function(contInputs){
-    let z = {
-        ek: contInputs[1],
-        do: contInputs[2],
-        sa: contInputs[3],
-        chahr: contInputs[4]
+index.a("save2", function (contInputs) {
+    let savedata = {
+        one: contInputs[1],
+        two: contInputs[2],
+        three: contInputs[3],
+        four: contInputs[4]
     }
-    z = JSON.stringify(z)
-    fs.writeFile('myDatabase.txt',z, {encoding:'utf8'}, function(error){
-        if(error){
+    savedata = JSON.stringify(savedata)
+    fs.writeFile('myDatabase.txt', savedata, { encoding: 'utf8' }, function (error) {
+        if (error) {
             console.log('ERROR:', error);
         }
-        else{
+        else {
             console.log('File Saved.')
         }
     })
 });
 
-
-
-cmd.use("openfile", function(contInputs){
-    fs.readFile(contInputs[1], function(error , data){
-        if(error){
+index.a("openfile", function (contInputs) {
+    fs.readFile(contInputs[1], function (error, data) {
+        if (error) {
             console.log('ERROR:', error);
         }
-        else{
-            console.log('File open.',data.toString())
+        else {
+            console.log('Files.', data.toString());
         }
-    })
+    });
 });
 
-
-
-cmd.start();
+index.start();

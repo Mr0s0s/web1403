@@ -1,12 +1,15 @@
-let inputs = process.argv.slice(2);
+let inputs = [];
+inputs = process.argv.slice(2);
 let command = inputs[0];
 let controllers = [];
+let errort = false;
 
-function parseInput(input){
-    return parseInt(input);
+
+function parseInputs(inputs) {
+    return parseInt(inputs);
 }
 
-function use(name, func){
+function use(name, func) {
     let x = {
         command: name,
         function: func
@@ -14,19 +17,19 @@ function use(name, func){
     controllers.push(x);
 }
 
-function start(){
-let errort = false;
-for(let item of controllers){
-    if(item.command === command){
-        console.log(item.function(parseInput(inputs[1]), parseInput(inputs[2])));
-        errort = true;
+function start() {
+    
+    for (let item of controllers) {
+        if (item.command === command) {
+            console.log(item.function(parseInputs(inputs[1]), parseInputs(inputs[2])));
+            errort = true;
+        }
+    }
+    if (!errort) {
+        console.log('NOT FOUND');
     }
 }
-if(!errort){
-    console.log('NOT FOUND');
-}
-}
 module.exports = {
-    a: use,
-    start:start
+    ww: use,
+    startt: start
 }

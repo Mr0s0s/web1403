@@ -3,8 +3,8 @@ let command = inputs[0];
 
 let controllers = [];
 
-function parseInput(input){
-    return parseInt(input);
+function parseInputs(inputs){
+    return parseInt(inputs);
 }
 
 function use(name, func){
@@ -27,10 +27,12 @@ use("multiply", function(a, b){
 use("div", function(a, b){
     return a / b
 });
+
 let errort = false;
+
 for(let item of controllers){
     if(item.command === command){
-        console.log(item.function(parseInput(inputs[1]), parseInput(inputs[2])));
+        console.log(item.function(parseInputs(inputs[1]), parseInputs(inputs[2])));
         errort = true;
     }
 }    
