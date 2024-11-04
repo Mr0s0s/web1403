@@ -42,14 +42,14 @@ function start() {
                         console.log('ERROR:', error);
                     }
                     else {
-                        console.log(data.code,"Database created.")
+                        console.log(data.code,"Database created.");
                         defaulterror();
                     }
                 })
             }
         }
         else {
-            console.log("Database vjod dard")
+            console.log("Database has.");
             defaulterror();
         }
     });

@@ -1,17 +1,17 @@
-let index = require('./C1-cmd');
+let index = require('./D2-cmd');
 let fs = require('fs');
 
 index.a("minus", function (contInputs) {
-    console.log(index.parseInput(contInputs[1]) - index.parseInput(contInputs[2]))
+    console.log(index.parseInput(contInputs[1]) - index.parseInput(contInputs[2]));
 });
 index.a("sum", function (contInputs) {
-    console.log(index.parseInput(contInputs[1]) + index.parseInput(contInputs[2]))
+    console.log(index.parseInput(contInputs[1]) + index.parseInput(contInputs[2]));
 });
 index.a("multiply", function (contInputs) {
-    console.log(index.parseInput(contInputs[1]) * index.parseInput(contInputs[2]))
+    console.log(index.parseInput(contInputs[1]) * index.parseInput(contInputs[2]));
 });
 index.a("div", function (contInputs) {
-    console.log(index.parseInput(contInputs[1]) / index.parseInput(contInputs[2]))
+    console.log(index.parseInput(contInputs[1]) / index.parseInput(contInputs[2]));
 });
 
 index.a("print", function (contInputs) {
@@ -29,7 +29,7 @@ index.a("save", function (contInputs) {
         Family: contInputs[2],
         Age: contInputs[3]
     }
-    fs.writeFile('Database_save1.txt', JSON.stringify(newsave), 'utf8', function (error) {
+    fs.writeFile('save1.txt', JSON.stringify(newsave), 'utf8', function (error) {
         if (error) {
             console.log("ERROR:", error);
         } else {
@@ -45,7 +45,7 @@ index.a("save2", function (contsave2) {
         three: contsave2[3]
     }
     savedata = JSON.stringify(savedata);
-    fs.writeFile('Database_save2.txt', savedata, { encoding: 'utf8' }, function (error, save2) {
+    fs.writeFile('save2.txt', savedata, { encoding: 'utf8' }, function (error, save2) {
         if (error) {
             console.log("Cant Save File", error);
         }
@@ -93,31 +93,33 @@ index.a("saveobj", function (contInputs) {
     fs.readFile(contInputs[1], function (error, data) {
         if (error) {
             if (error.code === "ENOENT") {
-                console.log(error.code, ":name file or txt Not drst.");
+                console.log(error.code, ": name file or txt is wrong.");
             }
             else if (error.code === "EISDIR") {
-                console.log(error.code, ": not txt has folder or ...");
+                console.log("Error: ", error);
             }
             else {
                 console.log("Error: ", error);
             }
         }
         else {
-            let getData = JSON.parse(data);
-            // getData = data.toString()
-            let newObj = {
-                One: contInputs[2],
-                Two: contInputs[3],
-                Three: contInputs[4]
+            let getData2 = {
+                One: contInputs[3],
+                Two: contInputs[4],
+                Three: contInputs[5]
             }
-            let database;
-            database = getData.data + newObj.data;
 
-            fs.writeFile('Database_saveobj.txt', JSON.stringify(database), { encoding: 'utf8' }, function (err, data) {
+            let getData1 = data.toString(); 
+            getData1 = JSON.stringify(getData1);
+            getData2 = JSON.stringify(getData2);
+            getData2 = getData2.toString();
+            let code =  getData1 + getData2;
+
+            fs.writeFile(contInputs[2], code, 'utf8', function (err, data) {
                 if (err) {
-                    console.log("ERROR:", err);
+                    console.log("ERROR:", err.code);
                 } else {
-                    console.log("File Saved!");
+                    console.log("File Saved.");
                 }
             })
         }
