@@ -1,4 +1,4 @@
-let index = require('./C1-cmd.js');
+let index = require('./C1-cmd');
 let fs = require('fs');
 
 index.a("minus", function(contInputs){

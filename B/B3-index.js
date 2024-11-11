@@ -1,15 +1,15 @@
-let a = require('./B3-cmd.js');
+let index = require('./B3-cmd.js');
 
-a.ww("minus", function(a, b){
+index.a("minus", function(a, b){
     return a - b
 });
-a.ww("sum", function(a, b){
+index.a("sum", function(a, b){
     return a + b
 });
-a.ww("multiply", function(a, b){
+index.a("multiply", function(a, b){
     return a * b
 });
-a.ww("div", function(a, b){
+index.a("div", function(a, b){
     return a / b
 });
-a.startt();
+index.start();

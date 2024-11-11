@@ -30,6 +30,6 @@ function start() {
     }
 }
 module.exports = {
-    ww: use,
-    startt: start
+    a: use,
+    start: start
 }

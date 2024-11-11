@@ -1,6 +1,6 @@
-let inputs = process.argv.slice(2);
+let inputs = [];
+inputs = process.argv.slice(2);
 let command = inputs[0];
-
 let controllers = [];
 
 function parseInputs(inputs){
@@ -29,7 +29,6 @@ use("div", function(a, b){
 });
 
 let errort = false;
-
 for(let item of controllers){
     if(item.command === command){
         console.log(item.function(parseInputs(inputs[1]), parseInputs(inputs[2])));
