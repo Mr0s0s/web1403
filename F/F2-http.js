@@ -1,6 +1,11 @@
 let http = require('http');
 let controllers = [];
 
+function write(response, body) {
+    response.write(JSON.stringify(body));
+    response.end();
+}
+
 function use(name, func) {
     let x = {
         url: name,
@@ -13,10 +18,9 @@ function route(request, response) {
     let found = false;
     for (let item of controllers) {
         if (request.url.startsWith(item.url)) {
-            request.path = request.url.split('/');
             item.function(request, response);
-            found = true;
         }
+        found = true;
     }
     if (!found) {
         console.log('Path not found.');
@@ -25,7 +29,9 @@ function route(request, response) {
 
 function start() {
     let server = http.createServer(function (request, response) {
-        console.log(request.method, request.url);
+        console.log('__________________________________');
+        console.log('');
+        request.path = request.url.split('/');
         route(request, response);
     });
     server.listen(80);
@@ -33,5 +39,6 @@ function start() {
 
 module.exports = {
     use: use,
-    start: start
+    start: start,
+    write: write
 }

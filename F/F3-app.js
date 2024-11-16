@@ -2,36 +2,38 @@ let app = require('./F3-http');
 let fs = require('fs')
 
 app.use('/test', function (request, response) {
-    console.log('test.')
+    result = {
+        data: request.url
+    }
+    console.log(request.method, request.url);
+    app.write(response, result)
 });
 
 app.use('/sum', function (request, response) {
     result = {
         data: parseInt(request.path[2]) + parseInt(request.path[3])
     };
-    write(response, result);
+    console.log('request.method:', request.method, '| request.url:', request.url, '| result.data:', result.data);
+    app.write(response, result)
 });
 
 app.use('/multiply', function (request, response) {
     result = {
         data: parseInt(request.path[2]) * parseInt(request.path[3])
     };
-    write(response, result);
+    console.log('request.method:', request.method, '| request.url:', request.url, '| result.data:', result.data);
+    app.write(response, result);
 });
 
 app.use('/print', function (request, response) {
     result = {
-        "name": request.path[2],
-        "family": request.path[3],
-        "email": request.path[4]
+        One: request.path[2],
+        Two: request.path[3],
+        Three: request.path[4]
     }
-    write(response, result);
+    console.log('request.method:', request.method, '| request.url:', request.url);
+    app.write(response, result);
 });
-
-function write(response, result) {
-    response.write(JSON.stringify(result))
-    response.end()
-}
 
 app.use('/save', function (request, response) {
     let x = {
@@ -41,10 +43,12 @@ app.use('/save', function (request, response) {
     }
     fs.writeFile('save.txt', JSON.stringify(x), function (error, data) {
         if (error) {
-            write(response, { result: "Cant File Save." });
+            app.write(response, { result: "Cant Save File." });
+            console.log('request.method:', request.method, '| request.url:', request.url, '| Cant Save File.');
         }
         else {
-            write(response, { result: "File Save." })
+            app.write(response, { result: "File Save." });
+            console.log('request.method:', request.method, '| request.url:', request.url, '| File Save.');
         }
     })
 });
@@ -52,49 +56,46 @@ app.use('/save', function (request, response) {
 app.use("/open", function (request, response) {
     fs.readFile(request.path[2], function (error, data) {
         if (error) {
-            console.log(error);
+            console.log("ERROR: ", error.code);
+            app.write(response, error.code);
 
         } else {
             result = data.toString()
-            write(response, result)
+            console.log('request.method:', request.method, '| request.url:', request.url, '| result:', result);
+            app.write(response, { result: JSON.parse(result) })
         }
     })
 })
 
-app.use("/saveOBJ", function (request, response) {
+app.use("/addobj", function (request, response) {
     fs.readFile(request.path[2], function (error, data) {
         if (error) {
             console.log("ERROR: ", error.code);
+            app.write(response, error.code);
         }
         else {
-            let getData = data.toString()
-            getData = JSON.parse(getData)
+            let getData = data.toString();
+            getData = JSON.parse(getData);
             let newOBJ = {
-                name: request.path[3],
-                family: request.path[4],
-                email: request.path[5]
+                One: request.path[3],
+                Two: request.path[4],
+                Three: request.path[5]
             }
-            getData.data.push(newOBJ)
-            fs.writeFile(request.path[2], JSON.stringify(getData), function (err) {
-                if (err) {
-                    console.log(err);
+            let z;
+            z = JSON.stringify(getData) + JSON.stringify(newOBJ);
+            fs.writeFile(request.path[2], JSON.stringify(z), function (error) {
+                if (error) {
+                    console.log("ERROR: ", error.code);
+                    app.write(response, error.code);
 
                 } else {
                     result = "Save Change"
-                    write(response, result)
+                    app.write(response, result);
+                    console.log("save: ");
                 }
             })
         }
     })
 })
-
-function write(res, result) {
-    if (typeof result === "number") {
-        result = result.toString()
-    }
-    res.write(result)
-    res.end()
-
-}
 
 app.start();

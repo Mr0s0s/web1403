@@ -7,7 +7,8 @@ function write(res, body) {
 }
 
 let server = http.createServer(function (req, res) {
-    console.log('request:', req.method, req.url);
+    console.log('__________________________________');
+    console.log('');
     let inputs = req.url.split('/');
     let equal;
 
@@ -16,13 +17,15 @@ let server = http.createServer(function (req, res) {
             data: parseInt(inputs[2]) + parseInt(inputs[3])
         }
         write(res, equal);
+        console.log('request.method:', req.method, '| request.url:', req.url, '| Equal=', equal.data);
     }
 
     function multiply() {
         equal = {
             data: parseInt(inputs[2]) * parseInt(inputs[3])
         }
-        write(res, equal)
+        write(res, equal);
+        console.log('request.method:', req.method, '| request.url:', req.url, '| Equal=', equal.data);
     }
 
     function print() {
@@ -31,7 +34,8 @@ let server = http.createServer(function (req, res) {
             Two: inputs[3],
             Three: inputs[4]
         }
-        write(res, equal)
+        write(res, equal);
+        console.log('request.method:', req.method, '| request.url:', req.url);
     }
 
     function save() {
@@ -47,18 +51,19 @@ let server = http.createServer(function (req, res) {
             }
             else {
                 console.log("Save File.");
-                write(res, { equal: "Save File." })
+                write(res, { equal: "Save File." });
+                console.log('request.method:', req.method, '| request.url:', req.url);
             }
         });
     }
-    
-    function create() {
-        let z = {
+
+    function save2() {
+        let x = {
             One: inputs[3],
             Two: inputs[4],
             Three: inputs[5]
         }
-        fs.writeFile(inputs[2], JSON.stringify(z), function (error, data) {
+        fs.writeFile(inputs[2], JSON.stringify(x), function (error, data) {
             if (error) {
                 console.log("Cant Save File.");
                 write(res, { equal: "Cant Save File." })
@@ -66,6 +71,8 @@ let server = http.createServer(function (req, res) {
             else {
                 console.log("Save File.");
                 write(res, { equal: "Save File." })
+                console.log('request.method:', req.method, '| request.url:', req.url);
+
             }
         })
     }
@@ -82,10 +89,9 @@ let server = http.createServer(function (req, res) {
     if (inputs[1] === "save") {
         save();
     }
-    if (inputs[1] === "create") {
-        create();
+    if (inputs[1] === "save2") {
+        save2();
     }
-
 });
 
 server.listen(80);

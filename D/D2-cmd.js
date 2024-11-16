@@ -37,7 +37,7 @@ function start() {
     fs.readFile('DataBase.json', function (error, data) {
         if (error) {
             if (error.code === 'ENOENT') {
-                fs.writeFile('database.json', JSON.stringify({ data: [] }), { encoding: 'utf8' }, function (error, data) {
+                fs.writeFile('database.json', JSON.stringify({ data: [] }), function (error, data) {
                     if (error) {
                         console.log('ERROR:', error);
                     }

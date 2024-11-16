@@ -7,7 +7,8 @@ function write(res, body) {
 }
 
 let server = http.createServer(function (req, res) {
-    console.log('request:', req.method, req.url);
+    console.log('__________________________________');
+    console.log('');
     let inputs = req.url.split('/');
     let equal;
 
@@ -16,12 +17,16 @@ let server = http.createServer(function (req, res) {
             data: parseInt(inputs[2]) + parseInt(inputs[3])
         }
         write(res, equal);
+        console.log('request.method:', req.method, '| request.url:', req.url, '| Equal=', equal.data);
+
     }
     function multiply() {
         equal = {
             data: parseInt(inputs[2]) * parseInt(inputs[3])
         }
         write(res, equal);
+        console.log('request.method:', req.method, '| request.url:', req.url, '| Equal=', equal.data);
+
     }
     function print() {
         equal = {
@@ -30,6 +35,8 @@ let server = http.createServer(function (req, res) {
             Three: inputs[4]
         }
         write(res, equal);
+        console.log('request.method:', req.method, '| request.url:', req.url);
+
     }
     function save() {
         let x = {
@@ -40,11 +47,12 @@ let server = http.createServer(function (req, res) {
         fs.writeFile("save.txt", JSON.stringify(x), function (error, data) {
             if (error) {
                 console.log("Cant Save File.")
-                write(res, {equal:"Cant Save File."})
+                write(res, { equal: "Cant Save File." })
             }
             else {
-                console.log("Save File.")
-                write(res, {equal:"Save File."})
+                console.log("Save File.");
+                write(res, { equal: "Save File." });
+                console.log('request.method:', req.method, '| request.url:', req.url);
             }
         });
     };
