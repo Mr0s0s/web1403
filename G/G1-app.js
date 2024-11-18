@@ -1,4 +1,4 @@
-let app = require('./F4-http');
+let app = require('./G1-http');
 let fs = require('fs')
 
 app.use('/test', function (request, response) {
@@ -102,11 +102,14 @@ app.use('/write', function (request, response) {
     fs.writeFile(request.data.name, request.data.content, function (error) {
         if (error) {
             console.log("ERROR:", error.code);
-            app.write(response, "ERROR")
+            write(response, "ERROR")
         } else {
             console.log("File Saved.");
             app.write(response, "File Saved postman.")
         }
+        console.log('_______GetData_postman_______');
+        console.log('');
+        console.log('request.data.name:', request.data.name, '| request.data.content:', request.data.content);
     })
 })
 

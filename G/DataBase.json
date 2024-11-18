@@ -1,0 +1,36 @@
+{
+    "records": [
+        {
+            "id": 1,
+            "content": {
+                "b": 2
+            }
+        },
+        {
+            "id": 2,
+            "content": {
+                "aaaa": 1,
+                "bbbb": 2,
+                "cccc": 333
+            }
+        },
+        {
+            "id": 3,
+            "content": {
+                "aaaa": 1
+            }
+        },
+        {
+            "id": 4,
+            "content": {
+                "aaaa": 1
+            }
+        },
+        {
+            "id": 5,
+            "content": {
+                "aaaa": 1
+            }
+        }
+    ]
+}

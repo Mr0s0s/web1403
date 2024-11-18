@@ -1,7 +1,7 @@
-let app = require('./F4-http');
-let fs = require('fs')
+let app = require('./G2-http');
+let fs = require('fs');
 
-app.use('/test', function (request, response) {
+app.use('GET', '/test', function (request, response) {
     result = {
         data: request.url
     }
@@ -9,23 +9,25 @@ app.use('/test', function (request, response) {
     app.write(response, result)
 });
 
-app.use('/sum', function (request, response) {
+app.use('GET', '/sum', sum);
+app.use('POST', '/sum', sum);
+function sum(request, response) {
     result = {
         data: parseInt(request.path[2]) + parseInt(request.path[3])
     };
-    console.log('request.method:', request.method, '| request.url:', request.url, '| result.data:', result.data);
-    app.write(response, result)
-});
+    console.log('GET', 'request.method:', request.method, '| request.url:', request.url, '| result.data:', result.data);
+    app.write(response, result);
+}
 
-app.use('/multiply', function (request, response) {
+app.use('GET', '/multiply', function (request, response) {
     result = {
         data: parseInt(request.path[2]) * parseInt(request.path[3])
     };
-    console.log('request.method:', request.method, '| request.url:', request.url, '| result.data:', result.data);
+    console.log('GET', 'request.method:', request.method, '| request.url:', request.url, '| result.data:', result.data);
     app.write(response, result);
 });
 
-app.use('/print', function (request, response) {
+app.use('GET', '/print', function (request, response) {
     result = {
         One: request.path[2],
         Two: request.path[3],
@@ -35,7 +37,7 @@ app.use('/print', function (request, response) {
     app.write(response, result);
 });
 
-app.use('/save', function (request, response) {
+app.use('GET', '/save', function (request, response) {
     let x = {
         One: request.path[2],
         Two: request.path[3],
@@ -53,7 +55,7 @@ app.use('/save', function (request, response) {
     })
 });
 
-app.use("/open", function (request, response) {
+app.use('GET', "/open", function (request, response) {
     fs.readFile(request.path[2], function (error, data) {
         if (error) {
             console.log("ERROR: ", error.code);
@@ -65,9 +67,9 @@ app.use("/open", function (request, response) {
             app.write(response, { result: JSON.parse(result) })
         }
     })
-})
+});
 
-app.use("/addobj", function (request, response) {
+app.use('GET', "/addobj", function (request, response) {
     fs.readFile(request.path[2], function (error, data) {
         if (error) {
             console.log("ERROR: ", error.code);
@@ -96,18 +98,73 @@ app.use("/addobj", function (request, response) {
             })
         }
     })
-})
+});
 
-app.use('/write', function (request, response) {
+app.use('POST', '/write', function (request, response) {
     fs.writeFile(request.data.name, request.data.content, function (error) {
         if (error) {
             console.log("ERROR:", error.code);
-            app.write(response, "ERROR")
+            app.write(response, "ERROR");
         } else {
             console.log("File Saved.");
             app.write(response, "File Saved postman.")
         }
+        console.log('_______GetData_postman_______');
+        console.log('');
+        console.log('request.data.name:', request.data.name, '| request.data.content:', request.data.content);
     })
-})
+});
+
+app.use('POST', "data", function (response, request) {
+    fs.readFile(request.data.name, function (error, data) {
+        if (error) {
+            console.log("ERROR123:", error.code);
+            app.write(response, "ERROR123");
+        }
+        else {
+            let obj = JSON.parse(data);
+            obj.records.push(request.data);
+            let staring = JSON.staringfy(obj);
+            fs.writeFile(request.data.name, staring, function (error, data) {
+                if (error) {
+                    console.log("ERROR:", error.code);
+                    app.write(response, "ERROR");
+                }
+                else {
+                    console.log("Save File:", { result: obj.data });
+                    app.write(response, "Save File");
+                }
+            })
+        }
+        console.log('_______GetData_postman_______');
+        console.log('');
+        console.log('request.data.name:', request.data.name, '| request.data.content:', request.data.content);
+    })
+});
+
+app.use('GET', '/data2', function (request, response) {
+    fs.readFile(request.data.name, function (error, data) {
+        if (error) {
+            console.log("ERROR:", error.code);
+            app.write(response, "ERROR");
+        }
+        else {
+            app.write(response, JSON.parse(data));
+            console.log("Save File:", { result: obj.data });
+        }
+    });
+});
+
+app.use('id', function (request, response) {
+    fs.readFile('./database.json', function (error, data) {
+        if (error) {
+            console.log("ERROR:", error.code);
+            app.write(response, "ERROR");
+        }
+        else {
+            app.write(response, JSON.parse(data));
+        }
+    })
+});
 
 app.start();
