@@ -83,22 +83,23 @@ app.use('GET', "/addobj", function (request, response) {
                 Two: request.path[4],
                 Three: request.path[5]
             }
-            let z;
-            z = JSON.stringify(getData) + JSON.stringify(newOBJ);
+            newOBJ = JSON.stringify(newOBJ)
+            // getData.data.push(newOBJ);
+            let z = JSON.stringify(getData) + JSON.stringify(newOBJ);
             fs.writeFile(request.path[2], JSON.stringify(z), function (error) {
                 if (error) {
                     console.log("ERROR: ", error.code);
                     app.write(response, error.code);
 
                 } else {
-                    result = "Save Change"
-                    app.write(response, result);
-                    console.log("save: ");
+                    app.write(response, { result: 'Save Change' });
+                    console.log("save: ", z);
                 }
             })
         }
     })
 });
+
 
 app.use('POST', '/write', function (request, response) {
     fs.writeFile(request.data.name, request.data.content, function (error) {
@@ -118,11 +119,11 @@ app.use('POST', '/write', function (request, response) {
 app.use('POST', "data", function (response, request) {
     fs.readFile(request.data.name, function (error, data) {
         if (error) {
-            console.log("ERROR123:", error.code);
-            app.write(response, "ERROR123");
+            console.log("Error:", error.code);
+            app.write(response, { result: "Error" });
         }
         else {
-            let obj = JSON.parse(data);
+            let obj = JSON.toString(data);
             obj.records.push(request.data);
             let staring = JSON.staringfy(obj);
             fs.writeFile(request.data.name, staring, function (error, data) {
@@ -142,7 +143,7 @@ app.use('POST', "data", function (response, request) {
     })
 });
 
-app.use('GET', '/data2', function (request, response) {
+app.use('POST', '/data2', function (request, response) {
     fs.readFile(request.data.name, function (error, data) {
         if (error) {
             console.log("ERROR:", error.code);
@@ -150,13 +151,13 @@ app.use('GET', '/data2', function (request, response) {
         }
         else {
             app.write(response, JSON.parse(data));
-            console.log("Save File:", { result: obj.data });
+            console.log("Save File:", data.toString());
         }
     });
 });
 
-app.use('id', function (request, response) {
-    fs.readFile('./database.json', function (error, data) {
+app.use('POST', 'id', function (request, response) {
+    fs.readFile('./DataBase.json', function (error, data) {
         if (error) {
             console.log("ERROR:", error.code);
             app.write(response, "ERROR");

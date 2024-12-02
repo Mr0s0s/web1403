@@ -1,7 +1,6 @@
 let http = require('http');
 let controllers = [];
 
-
 function write(res, body) {
     res.write(JSON.stringify(body));
     res.end();

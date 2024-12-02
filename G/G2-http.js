@@ -1,7 +1,6 @@
 let http = require('http');
 let controllers = [];
 
-
 function write(res, body) {
     res.write(JSON.stringify(body));
     res.end();
@@ -25,8 +24,8 @@ function route(request, response) {
         }
     }
     if (!found) {
-        console.log('Path not found.');
-        response.write("Path not found.");
+        console.log('request.method:', request.method, "| request.url:", request.url, '| Path not found.');
+        response.write('Path not found.');
         response.end();
     }
 }
@@ -34,14 +33,14 @@ function route(request, response) {
 function start() {
     let server = http.createServer(function (request, response) {
         console.log('');
-        console.log('____________________createServer____________________');
+        console.log('____________________CreateServer____________________');
         console.log('');
         request.path = request.url.split('/');
 
         let data = '';
         request.on('data', function (chunck) {
             data = data + chunck;
-        });
+        })
         request.on('end', function (chunck) {
             try {
                 request.data = JSON.parse(data);
@@ -50,7 +49,7 @@ function start() {
                 request.data = data;
             }
             route(request, response);
-        });
+        })
     });
     server.listen(80);
 }
@@ -58,5 +57,5 @@ function start() {
 module.exports = {
     use: use,
     start: start,
-    write: write
+    write: write,
 }

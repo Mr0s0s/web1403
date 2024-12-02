@@ -1,6 +1,6 @@
-let inputs = process.argv.slice(2);
+let inputs = [];
+inputs = process.argv.slice(2);
 let commend = inputs[0];
-
 
 let control = [
     {

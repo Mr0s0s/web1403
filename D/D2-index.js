@@ -45,7 +45,7 @@ index.a("save2", function (contsave2) {
         three: contsave2[3]
     }
     savedata = JSON.stringify(savedata);
-    fs.writeFile('save2.txt', savedata, { encoding: 'utf8' }, function (error, save2) {
+    fs.writeFile('save2.txt', savedata, { encoding: 'utf8' }, function (error) {
         if (error) {
             console.log("Cant Save File", error);
         }
@@ -109,13 +109,13 @@ index.a("saveobj", function (contInputs) {
                 Three: contInputs[5]
             }
 
-            let getData1 = data.toString(); 
+            let getData1 = data.toString();
             getData1 = JSON.stringify(getData1);
             getData2 = JSON.stringify(getData2);
             getData2 = getData2.toString();
-            let code =  getData1 + getData2;
+            let code = getData1 + getData2;
 
-            fs.writeFile(contInputs[2], code, 'utf8', function (err, data) {
+            fs.writeFile(contInputs[2], code, 'utf8', function (err) {
                 if (err) {
                     console.log("ERROR:", err.code);
                 } else {

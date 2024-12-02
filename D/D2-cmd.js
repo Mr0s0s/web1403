@@ -37,19 +37,19 @@ function start() {
     fs.readFile('DataBase.json', function (error, data) {
         if (error) {
             if (error.code === 'ENOENT') {
-                fs.writeFile('database.json', JSON.stringify({ data: [] }), function (error, data) {
+                fs.writeFile('DataBase.json', JSON.stringify({ data: [] }), function (error, data) {
                     if (error) {
                         console.log('ERROR:', error);
                     }
                     else {
-                        console.log(data.code,"Database created.");
+                        console.log(data.code,"DataBase Created.");
                         defaulterror();
                     }
                 })
             }
         }
         else {
-            console.log("Database has.");
+            console.log("DataBase has.");
             defaulterror();
         }
     });

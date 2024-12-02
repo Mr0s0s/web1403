@@ -6,6 +6,7 @@ function write(res, body) {
     res.end();
 }
 
+
 let server = http.createServer(function (req, res) {
     console.log('__________________________________');
     console.log('');
@@ -50,8 +51,8 @@ let server = http.createServer(function (req, res) {
                 write(res, { equal: "Cant Save File." })
             }
             else {
-                console.log("Save File.");
                 write(res, { equal: "Save File." });
+                console.log("Save File.");
                 console.log('request.method:', req.method, '| request.url:', req.url);
             }
         });

@@ -20,14 +20,14 @@ function use(name, func) {
 }
 
 function start() {
-    let errort = false;
+    let error = false;
     for (let item of controllers) {
         if (item.command === command) {
             item.function(inputs);
-            errort = true;
+            error = true;
         }
     }
-    if (!errort) {
+    if (!error) {
         console.log('NOT FOUND.');
     }
 }

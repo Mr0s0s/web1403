@@ -45,7 +45,7 @@ index.a("save2", function (contsave2) {
         three: contsave2[3]
     }
     savedata = JSON.stringify(savedata);
-    fs.writeFile('save2.txt', savedata, { encoding: 'utf8' }, function (error, save2) {
+    fs.writeFile('save2.txt', savedata, { encoding: 'utf8' }, function (error) {
         if (error) {
             console.log("Cant Save File", error);
         }
@@ -70,12 +70,12 @@ index.a("open", function (contInputs) {
     fs.readFile(contInputs[1], function (error, data) {
         if (error) {
             if (error.code === "ENOENT") {
-                console.log(error.code, ":name file or txt Not drst.");
+                console.log(error.code, ":Name file or txt Not drst.");
             }
             else if (error.code === "EISDIR") {
                 fs.readdir(contInputs[1], function (error2, data2) {
                     if (!error2) {
-                        console.log("Files:", data2);
+                        console.log("Files:", data2.toString());
                     }
                     else {
                         console.log("lock open code");
@@ -96,7 +96,7 @@ index.a("saveobj", function (contInputs) {
                 console.log(error.code, ": name file or txt is wrong.");
             }
             else if (error.code === "EISDIR") {
-                console.log("Error: ", error);
+                console.log("Error: ", error.code);
             }
             else {
                 console.log("Error: ", error);
@@ -115,7 +115,7 @@ index.a("saveobj", function (contInputs) {
             getData2 = getData2.toString();
             let code =  getData1 + getData2;
 
-            fs.writeFile(contInputs[2], code, 'utf8', function (err, data) {
+            fs.writeFile(contInputs[2], code, 'utf8', function (err) {
                 if (err) {
                     console.log("ERROR:", err);
                 } else {

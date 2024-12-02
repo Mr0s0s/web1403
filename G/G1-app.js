@@ -5,7 +5,7 @@ app.use('/test', function (request, response) {
     result = {
         data: request.url
     }
-    console.log(request.method, request.url);
+    console.log('request.method:', request.method, '| request.url:', request.url);
     app.write(response, result)
 });
 
@@ -13,7 +13,7 @@ app.use('/sum', function (request, response) {
     result = {
         data: parseInt(request.path[2]) + parseInt(request.path[3])
     };
-    console.log('request.method:', request.method, '| request.url:', request.url, '| result.data:', result.data);
+    console.log('request.method:', request.method, '| request.url:', request.url, '| result.data:', (request.path[2]), "+", (request.path[3]), '=', result.data);
     app.write(response, result)
 });
 
@@ -21,7 +21,7 @@ app.use('/multiply', function (request, response) {
     result = {
         data: parseInt(request.path[2]) * parseInt(request.path[3])
     };
-    console.log('request.method:', request.method, '| request.url:', request.url, '| result.data:', result.data);
+    console.log('request.method:', request.method, '| request.url:', request.url, '| result.data:', (request.path[2]), '*', (request.path[3]), "=", result.data);
     app.write(response, result);
 });
 
@@ -31,7 +31,7 @@ app.use('/print', function (request, response) {
         Two: request.path[3],
         Three: request.path[4]
     }
-    console.log('request.method:', request.method, '| request.url:', request.url);
+    console.log('request.method:', request.method, '| request.url:', request.url, '| result:', result);
     app.write(response, result);
 });
 
@@ -56,9 +56,8 @@ app.use('/save', function (request, response) {
 app.use("/open", function (request, response) {
     fs.readFile(request.path[2], function (error, data) {
         if (error) {
-            console.log("ERROR: ", error.code);
             app.write(response, error.code);
-
+            console.log("request.method:", request.method, "| request.url:", request.url, "| ERROR:", error.code);
         } else {
             result = data.toString()
             console.log('request.method:', request.method, '| request.url:', request.url, '| result:', result);
@@ -85,9 +84,8 @@ app.use("/addobj", function (request, response) {
             z = JSON.stringify(getData) + JSON.stringify(newOBJ);
             fs.writeFile(request.path[2], JSON.stringify(z), function (error) {
                 if (error) {
-                    console.log("ERROR: ", error.code);
+                    console.log("request.method:", request.method, "| request.url:", request.url, "| ERROR:", error.code);
                     app.write(response, error.code);
-
                 } else {
                     result = "Save Change"
                     app.write(response, result);
@@ -99,12 +97,14 @@ app.use("/addobj", function (request, response) {
 })
 
 app.use('/write', function (request, response) {
+
     fs.writeFile(request.data.name, request.data.content, function (error) {
         if (error) {
-            console.log("ERROR:", error.code);
-            write(response, "ERROR")
+            console.log("request.method:", request.method, "| request.url:", request.url, "| ERROR:", error.code);
+            app.write(response, "ERROR")
         } else {
-            console.log("File Saved.");
+            console.log("request.method:", request.method, "| request.url:", request.url, "| File Saved.");
+            console.log('');
             app.write(response, "File Saved postman.")
         }
         console.log('_______GetData_postman_______');

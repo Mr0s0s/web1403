@@ -100,7 +100,7 @@ app.use('GET', "/addobj", function (request, response) {
     })
 });
 
-app.use('POST', '/write', function (request, response) {
+app.use('GET', '/write', function (request, response) {
     fs.writeFile(request.data.name, request.data.content, function (error) {
         if (error) {
             console.log("ERROR:", error.code);

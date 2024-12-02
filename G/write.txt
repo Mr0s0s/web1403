@@ -1,1 +1,1 @@
-aaa bbb ccc
+write aaa bbb ccc

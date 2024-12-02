@@ -114,7 +114,7 @@ index.a("saveobj", function (contInputs) {
             getData2 = getData2.toString();
             let code =  getData1 + getData2;
 
-            fs.writeFile(contInputs[2], code, 'utf8', function (err, data) {
+            fs.writeFile(contInputs[2], code, 'utf8', function (err) {
                 if (err) {
                     console.log("ERROR:", err);
                 } else {
