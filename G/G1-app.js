@@ -97,7 +97,6 @@ app.use("/addobj", function (request, response) {
 })
 
 app.use('/write', function (request, response) {
-
     fs.writeFile(request.data.name, request.data.content, function (error) {
         if (error) {
             console.log("request.method:", request.method, "| request.url:", request.url, "| ERROR:", error.code);
@@ -111,6 +110,6 @@ app.use('/write', function (request, response) {
         console.log('');
         console.log('request.data.name:', request.data.name, '| request.data.content:', request.data.content);
     })
-})
+});
 
 app.start();

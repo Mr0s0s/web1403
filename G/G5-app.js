@@ -100,33 +100,33 @@ app.use('GET', "/addobj", function (request, response) {
     })
 });
 
-
 app.use('POST', '/write', function (request, response) {
     fs.writeFile(request.data.name, request.data.content, function (error) {
         if (error) {
-            console.log("ERROR:", error.code);
-            app.write(response, "ERROR");
+            console.log("request.method:", request.method, "| request.url:", request.url, "| ERROR:", error.code);
+            app.write(response, "ERROR")
         } else {
-            console.log("File Saved.");
+            console.log("request.method:", request.method, "| request.url:", request.url, "| File Saved.");
+            console.log('');
             app.write(response, "File Saved postman.")
         }
         console.log('_______GetData_postman_______');
         console.log('');
         console.log('request.data.name:', request.data.name, '| request.data.content:', request.data.content);
     })
-});
+});//true
 
-app.use('POST', "data", function (response, request) {
+app.use('POST', "/data", function (response, request) {
     fs.readFile(request.data.name, function (error, data) {
         if (error) {
-            console.log("Error:", error.code);
-            app.write(response, { result: "Error" });
+            console.log('request.method: ', request.method, "| request.url: ", request.url, "| ERROR: ", error.code);
+            app.write(response, "ERROR");
         }
         else {
-            let obj = JSON.toString(data);
-            obj.records.push(request.data);
-            let staring = JSON.staringfy(obj);
-            fs.writeFile(request.data.name, staring, function (error, data) {
+            getData = data.toString()
+            getData = JSON.parse(getData)
+            getData.data.push(request.data.content)
+            fs.writeFile(request.data.name, JSON.staringfy(getData), function (error) {
                 if (error) {
                     console.log("ERROR:", error.code);
                     app.write(response, "ERROR");
@@ -143,27 +143,28 @@ app.use('POST', "data", function (response, request) {
     })
 });
 
-app.use('POST', '/data2', function (request, response) {
+app.use('GET', '/data2', function (request, response) {
     fs.readFile(request.data.name, function (error, data) {
         if (error) {
-            console.log("ERROR:", error.code);
+            console.log('request.method: ', request.method, "| request.url: ", request.url, "| ERROR: ", error.code);
             app.write(response, "ERROR");
         }
         else {
             app.write(response, JSON.parse(data));
-            console.log("Save File:", data.toString());
+            console.log("Open File:", data.toString());
         }
     });
 });
 
-app.use('POST', 'id', function (request, response) {
+app.use('GET', '/id', function (request, response) {
     fs.readFile('./DataBase.json', function (error, data) {
         if (error) {
-            console.log("ERROR:", error.code);
+            console.log('request.method: ', request.method, "| request.url: ", request.url, "| ERROR: ", error.code);
             app.write(response, "ERROR");
         }
         else {
             app.write(response, JSON.parse(data));
+            console.log("Open File:", data.toString());
         }
     })
 });

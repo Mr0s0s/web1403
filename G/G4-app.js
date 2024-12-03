@@ -103,10 +103,11 @@ app.use('GET', "/addobj", function (request, response) {
 app.use('POST', '/write', function (request, response) {
     fs.writeFile(request.data.name, request.data.content, function (error) {
         if (error) {
-            console.log("ERROR:", error.code);
-            app.write(response, "ERROR");
+            console.log("request.method:", request.method, "| request.url:", request.url, "| ERROR:", error.code);
+            app.write(response, "ERROR")
         } else {
-            console.log("File Saved.");
+            console.log("request.method:", request.method, "| request.url:", request.url, "| File Saved.");
+            console.log('');
             app.write(response, "File Saved postman.")
         }
         console.log('_______GetData_postman_______');
@@ -115,17 +116,17 @@ app.use('POST', '/write', function (request, response) {
     })
 });
 
-app.use('POST', "data", function (response, request) {
+app.use('POST', "/data", function (response, request) {
     fs.readFile(request.data.name, function (error, data) {
         if (error) {
-            console.log("ERROR123:", error.code);
-            app.write(response, "ERROR123");
+            console.log('request.method: ', request.method, "| request.url: ", request.url, "| ERROR: ", error.code);
+            app.write(response, "ERROR");
         }
         else {
-            let obj = JSON.parse(data);
-            obj.records.push(request.data);
-            let staring = JSON.staringfy(obj);
-            fs.writeFile(request.data.name, staring, function (error, data) {
+            getData = data.toString()
+            getData = JSON.parse(getData)
+            getData.data.push(request.data.content)
+            fs.writeFile(request.data.name, JSON.staringfy(getData), function (error) {
                 if (error) {
                     console.log("ERROR:", error.code);
                     app.write(response, "ERROR");
@@ -145,12 +146,12 @@ app.use('POST', "data", function (response, request) {
 app.use('GET', '/data2', function (request, response) {
     fs.readFile(request.data.name, function (error, data) {
         if (error) {
-            console.log("ERROR123:", error.code);
-            app.write(response, "ERROR123");
+            console.log('request.method: ', request.method, "| request.url: ", request.url, "| ERROR: ", error.code);
+            app.write(response, "ERROR");
         }
         else {
             app.write(response, JSON.parse(data));
-            console.log("Save File:", { result: obj.data });
+            console.log("Open File:", data.toString());
         }
     });
 });

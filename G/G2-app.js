@@ -93,50 +93,46 @@ app.use('GET', "/addobj", function (request, response) {
             })
         }
     })
-})
+});
 
-app.use('GET', '/write', function (request, response) {
+app.use('POST', '/write', function (request, response) {
     fs.writeFile(request.data.name, request.data.content, function (error) {
         if (error) {
             console.log("request.method:", request.method, "| request.url:", request.url, "| ERROR:", error.code);
-            app.write(response, error.code);
+            app.write(response, "ERROR")
         } else {
             console.log("request.method:", request.method, "| request.url:", request.url, "| File Saved.");
             console.log('');
             app.write(response, "File Saved postman.")
         }
-        console.log('_______SendData_postman_______');
+        console.log('_______GetData_postman_______');
         console.log('');
         console.log('request.data.name:', request.data.name, '| request.data.content:', request.data.content);
     })
-})
+});
 
-app.use('POST', "data", function (response, request) {
+app.use('POST', "/data", function (response, request) {
     fs.readFile(request.data.name, function (error, data) {
         if (error) {
-            console.log("request.method:", request.method, "| request.url:", request.url, "| ERROR123:", error.code);
-            app.write(response, error.code);
+            console.log('request.method: ', request.method, "| request.url: ", request.url, "| ERROR: ", error.code);
+            app.write(response, "ERROR");
         }
         else {
-            let olddata = data.toString();
-            olddata = JSON.parse(olddata);
-            let newdata = request.data.content;
-            // newdata = data.toString();
-            // newdata = JSON.parse(newdata);
-            olddata.data.push(newdata)
-
-            fs.writeFile(request.data.name, JSON.stringify(olddata), function (eror) {
-                if (eror) {
-                    console.log("request.method:", request.method, "| request.url:", request.url, "| ERROR:", eror.code);
-                    app.write(response, "ERROR")
-                } else {
-                    console.log("request.method:", request.method, "| request.url:", request.url, "| File Saved.");
-                    console.log('');
-                    app.write(response, "File Saved postman.")
+            getData = data.toString()
+            getData = JSON.parse(getData)
+            getData.data.push(request.data.content)
+            fs.writeFile(request.data.name, JSON.staringfy(getData), function (error) {
+                if (error) {
+                    console.log("ERROR:", error.code);
+                    app.write(response, "ERROR");
+                }
+                else {
+                    console.log("Save File:", { result: obj.data });
+                    app.write(response, "Save File");
                 }
             })
         }
-        console.log('_______SendData_postman_______');
+        console.log('_______GetData_postman_______');
         console.log('');
         console.log('request.data.name:', request.data.name, '| request.data.content:', request.data.content);
     })
