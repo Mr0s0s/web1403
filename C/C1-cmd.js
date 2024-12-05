@@ -3,7 +3,6 @@ inputs = process.argv.slice(2);
 let command = inputs[0];
 let controllers = [];
 
-
 function parseInput(input) {
     if (isNaN(parseInt(input))) {
         return input;
@@ -34,6 +33,6 @@ function start() {
 
 module.exports = {
     a: use,
-    start: start,
-    parseInput: parseInput
+    parseInput: parseInput,
+    start: start
 }

@@ -6,25 +6,31 @@ let control = [
     {
         name: "sum",
         ciled: function sum(a, b) {
-            return parseInt(a) + parseInt(b);
+            return { result: parseInt(a) + parseInt(b) };
         }
     },
     {
         name: "multiply",
         ciled: function multiply(a, b) {
-            return parseInt(a) * parseInt(b);
+            return { result: parseInt(a) * parseInt(b) };
         }
     },
     {
         name: "minus",
         ciled: function minus(a, b) {
-            return parseInt(a) - parseInt(b);
+            return { result: parseInt(a) - parseInt(b) };
         }
     },
     {
         name: "div",
         ciled: function div(a, b) {
-            return parseInt(a) / parseInt(b);
+            return { result: parseInt(a) / parseInt(b) };
+        }
+    },
+    {
+        name: "tavan",
+        ciled: function div(a, b) {
+            return { result: parseInt(a) ** parseInt(b) };
         }
     }
 ];

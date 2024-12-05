@@ -1,36 +1,40 @@
-let a = require('./B5-cmd.js');
+let use = require('./B5-cmd.js');
 let fs = require('fs');
 
-a.a("minus", function(contInputs){
-    console.log(a.parseInput(contInputs[1]) - a.parseInput(contInputs[2]));
+use.a("minus", function (contInputs) {
+    console.log({ result: use.parseInput(contInputs[1]) - use.parseInput(contInputs[2]) });
 });
-a.a("sum", function(contInputs){
-    console.log(a.parseInput(contInputs[1]) + a.parseInput(contInputs[2]));
+use.a("sum", function (contInputs) {
+    console.log({ result: use.parseInput(contInputs[1]) + use.parseInput(contInputs[2]) });
 });
-a.a("multiply", function(contInputs){
-    console.log(a.parseInput(contInputs[1]) * a.parseInput(contInputs[2]));
+use.a("multiply", function (contInputs) {
+    console.log({ result: use.parseInput(contInputs[1]) * use.parseInput(contInputs[2]) });
 });
-a.a("div", function(contInputs){
-    console.log(a.parseInput(contInputs[1]) / a.parseInput(contInputs[2]));
+use.a("div", function (contInputs) {
+    console.log({ result: use.parseInput(contInputs[1]) / use.parseInput(contInputs[2]) });
 });
-a.a("print", function(contInputs){
+use.a("tavan", function (contInputs) {
+    console.log({ result: use.parseInput(contInputs[1]) ** use.parseInput(contInputs[2]) });
+});
+
+use.a("print", function (contInputs) {
     console.log({
-        Name: contInputs[1],
-        Family: contInputs[2],
-        Age: contInputs[3],
-        Email: contInputs[4]
+        name: contInputs[1],
+        family: contInputs[2],
+        age: (use.parseInput(contInputs[3])),
+        email: contInputs[4] + '@gmail.com'
     });
 });
 
-a.a("saverd", function(contInputs){
-    fs.writeFile('myDatabase.txt', contInputs[1], {encoding:'utf8'}, function(error){
-        if(error){
+use.a("save", function (contInputs) {
+    fs.writeFile('myDatabase.txt', contInputs[1], function (error) {
+        if (error) {
             console.log('ERROR:', error);
         }
-        else{
-            console.log('File Saved.')
+        else {
+            console.log('Save Data.', { FileData: contInputs[1] })
         }
     })
 });
 
-a.start();
+use.start();

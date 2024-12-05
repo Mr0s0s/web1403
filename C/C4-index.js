@@ -1,88 +1,91 @@
-let index = require('./C1-cmd.js');
+let use = require('./C1-cmd.js');
 let fs = require('fs');
 
-index.a("minus", function (contInputs) {
-    console.log(index.parseInput(contInputs[1]) - index.parseInput(contInputs[2]));
+use.a("minus", function (contInputs) {
+    console.log({ result: use.parseInput(contInputs[1]) - use.parseInput(contInputs[2]) });
 });
-index.a("sum", function (contInputs) {
-    console.log(index.parseInput(contInputs[1]) + index.parseInput(contInputs[2]));
+use.a("sum", function (contInputs) {
+    console.log({ result: use.parseInput(contInputs[1]) + use.parseInput(contInputs[2]) });
 });
-index.a("multiply", function (contInputs) {
-    console.log(index.parseInput(contInputs[1]) * index.parseInput(contInputs[2]));
+use.a("multiply", function (contInputs) {
+    console.log({ result: use.parseInput(contInputs[1]) * use.parseInput(contInputs[2]) });
 });
-index.a("div", function (contInputs) {
-    console.log(index.parseInput(contInputs[1]) / index.parseInput(contInputs[2]));
+use.a("div", function (contInputs) {
+    console.log({ result: use.parseInput(contInputs[1]) / use.parseInput(contInputs[2]) });
+});
+use.a("tavan", function (contInputs) {
+    console.log({ result: use.parseInput(contInputs[1]) ** use.parseInput(contInputs[2]) });
 });
 
-index.a("print", function (contInputs) {
+use.a("print", function (contInputs) {
     console.log({
-        Name: contInputs[1],
-        Family: contInputs[2],
-        Age: (index.parseInput(contInputs[3])),
-        Email: contInputs[4]
+        name: contInputs[1],
+        family: contInputs[2],
+        age: (use.parseInput(contInputs[3])),
+        email: contInputs[4] + '@gmail.com'
     });
 });
 
-index.a("save", function (contInputs) {
-    fs.writeFile('myDatabase.txt', contInputs[1], { encoding: 'utf8' }, function (error) {
+use.a("save", function (contInputs) {
+    fs.writeFile('myDatabase.txt', contInputs[1], function (error) {
         if (error) {
-            console.log('ERROR:', error);
+            console.log('ERROR:', error.code);
         }
         else {
-            console.log('File Saved.')
+            console.log('Save Data.', { FileData: contInputs[1] });
         }
     })
 });
 
-index.a("save2", function (contInputs) {
+use.a("save2", function (contInputs) {
     let savedata = {
         one: contInputs[1],
         two: contInputs[2],
         three: contInputs[3],
         four: contInputs[4]
     }
-    savedata = JSON.stringify(savedata)
-    fs.writeFile('myDatabase.txt', savedata, { encoding: 'utf8' }, function (error) {
+    fs.writeFile('myDatabase.txt', JSON.stringify(savedata), function (error) {
         if (error) {
-            console.log('ERROR:', error);
+            console.log('ERROR:', error.code);
         }
         else {
-            console.log('File Saved.')
+            console.log('Save Data.', { FileData: savedata });
         }
-    })
+    });
 });
 
-index.a("openfile", function (contInputs) {
+use.a("openfile", function (contInputs) {
     fs.readFile(contInputs[1], function (error, data) {
         if (error) {
-            console.log('ERROR:', error);
+            console.log('ERROR:', error.code);
+            console.log("file or txt Not Found.");
         }
         else {
-            console.log('Files.', data.toString())
+            console.log('FileData.', JSON.parse(data));
         }
-    })
+    });
 });
 
-index.a("open", function (contInputs) {
+use.a("open", function (contInputs) {
     fs.readFile(contInputs[1], function (error, data) {
         if (error) {
             if (error.code === "ENOENT") {
                 console.log("name file or txt Not drst.");
             }
             else if (error.code === "EISDIR") {
-                fs.readdir(contInputs[1], function (error2, data2) {
-                    if (error2) {
-                        console.log("Not Found");
+                fs.readdir(contInputs[1], function (error, data) {
+                    if (error) {
+                        console.log('ERROR:', error.code);
                     } else {
-                        console.log("Files:", data2);
+                        console.log("Files:", JSON.stringify(data));
                     }
                 })
             }
         }
         else {
-            console.log("File open.", data.toString());
+            console.log("FileData.", JSON.parse(data));
         }
     })
 });
 
-index.start();
+use.start();

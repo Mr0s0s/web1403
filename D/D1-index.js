@@ -29,7 +29,7 @@ index.a("save", function (contInputs) {
         Family: contInputs[2],
         Age: contInputs[3]
     }
-    fs.writeFile('save1.txt', JSON.stringify(newsave), 'utf8', function (error) {
+    fs.writeFile('save1.txt', JSON.stringify(newsave), function (error) {
         if (error) {
             console.log("ERROR:", error.code);
         } else {
@@ -108,11 +108,11 @@ index.a("saveobj", function (contInputs) {
                 Three: contInputs[5]
             }
 
-            let getData1 = data.toString(); 
+            let getData1 = data.toString();
             getData1 = JSON.stringify(getData1);
             getData2 = JSON.stringify(getData2);
             getData2 = getData2.toString();
-            let code =  getData1 + getData2;
+            let code = getData1 + getData2;
 
             fs.writeFile(contInputs[2], code, 'utf8', function (err) {
                 if (err) {

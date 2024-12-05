@@ -3,7 +3,6 @@ inputs = process.argv.slice(2);
 let command = inputs[0];
 let controllers = [];
 
-
 function parseInput(input) {
     if (isNaN(parseInt(input))) {
         return input;
@@ -20,20 +19,20 @@ function use(name, func) {
 }
 
 function start() {
-    let errort = false;
+    let error = false;
     for (let item of controllers) {
         if (item.command === command) {
             item.function(inputs);
-            errort = true;
+            error = true;
         }
     }
-    if (!errort) {
+    if (!error) {
         console.log('NOT FOUND.');
     }
 }
 
 module.exports = {
     a: use,
-    start: start,
-    parseInput: parseInput
+    parseInput: parseInput,
+    start: start
 }

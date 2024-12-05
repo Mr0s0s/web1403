@@ -1,24 +1,28 @@
-let ues = require('./B4-cmd.js');
+let use = require('./B4-cmd.js');
 
-ues.a("minus", function (contInputs) {
-    console.log(ues.parseInput(contInputs[1]) - ues.parseInput(contInputs[2]));
+use.a("minus", function (contInputs) {
+    console.log({ result: use.parseInputs(contInputs[1]) - use.parseInputs(contInputs[2]) });
 });
-ues.a("sum", function (contInputs) {
-    console.log(ues.parseInput(contInputs[1]) + ues.parseInput(contInputs[2]));
+use.a("sum", function (contInputs) {
+    console.log({ result: use.parseInputs(contInputs[1]) + use.parseInputs(contInputs[2]) });
 });
-ues.a("multiply", function (contInputs) {
-    console.log(ues.parseInput(contInputs[1]) * ues.parseInput(contInputs[2]));
+use.a("multiply", function (contInputs) {
+    console.log({ result: use.parseInputs(contInputs[1]) * use.parseInputs(contInputs[2]) });
 });
-ues.a("div", function (contInputs) {
-    console.log(ues.parseInput(contInputs[1]) / ues.parseInput(contInputs[2]));
+use.a("div", function (contInputs) {
+    console.log({ result: use.parseInputs(contInputs[1]) / use.parseInputs(contInputs[2]) });
 });
-ues.a("print", function (contInputs) {
+use.a("tavan", function (contInputs) {
+    console.log({ result: use.parseInputs(contInputs[1]) ** use.parseInputs(contInputs[2]) });
+});
+
+use.a("print", function (contInputs) {
     console.log({
         name: contInputs[1],
         family: contInputs[2],
-        age: (ues.parseInput(contInputs[3])),
-        email: contInputs[4]
+        age: (use.parseInputs(contInputs[3])),
+        email: contInputs[4] + '@gmail.com'
     });
 });
 
-ues.start();
+use.start();

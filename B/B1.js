@@ -13,16 +13,19 @@ function use(name, func) {
 }
 
 use("sum", function (a, b) {
-    return a + b;
+    return { result: parseInt(a) + parseInt(b) };
 });
 use("minus", function (a, b) {
-    return a - b;
+    return { result: parseInt(a) - parseInt(b) };
 });
 use("div", function (a, b) {
-    return a / b;
+    return { result: parseInt(a) / parseInt(b) };
 });
 use("multiply", function (a, b) {
-    return a * b;
+    return { result: parseInt(a) * parseInt(b) };
+});
+use("tavan", function (a, b) {
+    return { result: parseInt(a) ** parseInt(b) };
 });
 
 
