@@ -7,10 +7,10 @@ function write(res, body) {
 
 let server = http.createServer(function (req, res) {
     let equal;
+    console.log('');
     console.log('__________________________________');
     console.log('');
     let inputs = req.url.split('/');
-
 
     function sum() {
         equal = {

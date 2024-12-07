@@ -23,12 +23,13 @@ function route(request, response) {
         found = true;
     }
     if (!found) {
-        console.log('Path not found.');
+        console.log('Path Not Found.');
     }
 }
 
 function start() {
     let server = http.createServer(function (request, response) {
+        console.log('');
         console.log('__________________________________');
         console.log('');
         request.path = request.url.split('/');
@@ -40,5 +41,5 @@ function start() {
 module.exports = {
     use: use,
     start: start,
-    write:write
+    write: write
 }

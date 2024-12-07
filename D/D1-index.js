@@ -1,128 +1,130 @@
-let index = require('./D1-cmd');
+let use = require('./D1-cmd.js');
 let fs = require('fs');
 
-index.a("minus", function (contInputs) {
-    console.log(index.parseInput(contInputs[1]) - index.parseInput(contInputs[2]));
+use.a("minus", function (contInputs) {
+    console.log({ result: use.parseInput(contInputs[1]) - use.parseInput(contInputs[2]) });
 });
-index.a("sum", function (contInputs) {
-    console.log(index.parseInput(contInputs[1]) + index.parseInput(contInputs[2]));
+use.a("sum", function (contInputs) {
+    console.log({ result: use.parseInput(contInputs[1]) + use.parseInput(contInputs[2]) });
 });
-index.a("multiply", function (contInputs) {
-    console.log(index.parseInput(contInputs[1]) * index.parseInput(contInputs[2]));
+use.a("multiply", function (contInputs) {
+    console.log({ result: use.parseInput(contInputs[1]) * use.parseInput(contInputs[2]) });
 });
-index.a("div", function (contInputs) {
-    console.log(index.parseInput(contInputs[1]) / index.parseInput(contInputs[2]));
+use.a("div", function (contInputs) {
+    console.log({ result: use.parseInput(contInputs[1]) / use.parseInput(contInputs[2]) });
+});
+use.a("tavan", function (contInputs) {
+    console.log({ result: use.parseInput(contInputs[1]) ** use.parseInput(contInputs[2]) });
 });
 
-index.a("print", function (contInputs) {
+use.a("print", function (contInputs) {
     console.log({
         Name: contInputs[1],
         Family: contInputs[2],
-        Age: (index.parseInput(contInputs[3])),
-        Email: contInputs[4]
+        Age: (use.parseInput(contInputs[3])),
+        Email: contInputs[4] + '@gmail.com'
     });
 });
 
-index.a("save", function (contInputs) {
-    let newsave = {
-        Name: contInputs[1],
-        Family: contInputs[2],
-        Age: contInputs[3]
-    }
-    fs.writeFile('save1.txt', JSON.stringify(newsave), function (error) {
+use.a("save", function (contInputs) {
+    fs.writeFile('myDatabase.txt', contInputs[1], function (error) {
         if (error) {
-            console.log("ERROR:", error.code);
-        } else {
-            console.log("File Saved");
+            console.log('ERROR:', error.code);
+        }
+        else {
+            console.log('Save Data.', { FileData: contInputs[1] });
         }
     })
 });
 
-index.a("save2", function (contsave2) {
+use.a("save2", function (contInputs) {
     let savedata = {
-        one: contsave2[1],
-        two: contsave2[2],
-        three: contsave2[3]
+        one: contInputs[1],
+        two: contInputs[2],
+        three: contInputs[3],
     }
-    fs.writeFile('save2.txt', JSON.stringify(savedata), 'utf8', function (error) {
+    fs.writeFile('myDatabase.txt', JSON.stringify(savedata), function (error) {
         if (error) {
-            console.log("Cant Save File for Error: ", error.code);
+            console.log('ERROR:', error.code);
         }
         else {
-            console.log("Save File");
+            console.log('Save Data.', { FileData: savedata });
         }
     });
 });
 
-index.a("openfile", function (contInputs) {
+use.a("openfile", function (contInputs) {
     fs.readFile(contInputs[1], function (error, data) {
         if (error) {
-            console.log('ERROR:', error);
+            console.log('ERROR:', error.code);
+            console.log("file or txt Not Found.");
         }
         else {
-            console.log('Files.', data.toString())
+            console.log('FileData.', JSON.parse(data));
         }
-    })
+    });
 });
 
-index.a("open", function (contInputs) {
+use.a("open", function (contInputs) {
     fs.readFile(contInputs[1], function (error, data) {
         if (error) {
             if (error.code === "ENOENT") {
-                console.log(error.code, ": name file or txt is wrong.");
+                console.log("file or txt Not Found.");
             }
             else if (error.code === "EISDIR") {
-                fs.readdir(contInputs[1], function (error2, data2) {
-                    if (!error2) {
-                        console.log("Files:", data2);
-                    }
-                    else {
-                        console.log("lock open code");
+                fs.readdir(contInputs[1], function (error, data) {
+                    if (error) {
+                        console.log('ERROR:', error.code);
+                    } else {
+                        console.log("Files:", JSON.stringify(data));
                     }
                 })
             }
         }
         else {
-            console.log("File open.", data.toString());
+            console.log("FileData.", JSON.parse(data));
         }
     })
 });
 
-index.a("saveobj", function (contInputs) {
-    fs.readFile(contInputs[1], function (error, data) {
+use.a('createjson', function (contInputs) {
+    let x = { "records": [] };
+    fs.writeFile('data.json', JSON.stringify(x), function (error) {
         if (error) {
-            if (error.code === "ENOENT") {
-                console.log(error.code, ": name file or txt is wrong.");
-            }
-            else if (error.code === "EISDIR") {
-                console.log("Error: ", error);
-            }
-            else {
-                console.log("Error: ", error);
-            }
+            console.log({ result: "Cant Save File for: " + error.code });
         }
         else {
-            let getData2 = {
+            console.log({ result: "Save File. " });
+        }
+    })
+});
+
+use.a("addobj", function (contInputs) {
+    fs.readFile(contInputs[1], function (error, data) {
+        if (error) {
+            console.log({ result: "Cant Save File for: " + error.code });
+        }
+        else {
+            let getData = data.toString();
+            getData = JSON.parse(getData);
+            let newOBJ = [{
                 One: contInputs[3],
                 Two: contInputs[4],
                 Three: contInputs[5]
-            }
+            }]
+            newOBJ.push(getData)
+            let x = JSON.stringify(newOBJ);
+            fs.writeFile(contInputs[2], x, function (error) {
+                /* فایل حتما باید از نوع json باشد */
+                if (error) {
+                    console.log({ result: "Cant Save File for: " + error.code });
 
-            let getData1 = data.toString();
-            getData1 = JSON.stringify(getData1);
-            getData2 = JSON.stringify(getData2);
-            getData2 = getData2.toString();
-            let code = getData1 + getData2;
-
-            fs.writeFile(contInputs[2], code, 'utf8', function (err) {
-                if (err) {
-                    console.log("ERROR:", err);
                 } else {
-                    console.log("File Saved.");
+                    console.log({ result: 'Save Change.' + '| Data File: ' + x });
                 }
             })
         }
-    });
+    })
 });
 
-index.start();
+use.start();

@@ -1,12 +1,9 @@
 let http = require('http');
 let controllers = [];
 
-function write(response, body) {
-    if (typeof body === "number") {
-        body = body.toString()
-    }
-    response.write(body)
-    response.end()
+function write(res, body) {
+    res.write(JSON.stringify(body));
+    res.end();
 }
 
 function use(name, func) {
@@ -27,6 +24,8 @@ function route(request, response) {
     }
     if (!found) {
         console.log('Path not found.');
+        response.write("Path not found.");
+        response.end();
     }
 }
 
@@ -36,17 +35,18 @@ function start() {
         console.log('____________________createServer____________________');
         console.log('');
         request.path = request.url.split('/');
-        console.log('request.method:', request.method, "| request.url:", request.url);
 
         let data = '';
         request.on('data', function (chunck) {
             data = data + chunck;
         });
         request.on('end', function (chunck) {
-            request.data = JSON.parse(data);
-            console.log('_______GetData_postman_______');
-            console.log('');
-            console.log('request.data.name:', request.data.name, '| request.data.content:', request.data.content);
+            try {
+                request.data = JSON.parse(data);
+            }
+            catch (e) {
+                request.data = data;
+            }
             route(request, response);
         });
     });
@@ -56,5 +56,5 @@ function start() {
 module.exports = {
     use: use,
     start: start,
-    write: write,
+    write: write
 }

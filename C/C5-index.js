@@ -19,10 +19,10 @@ use.a("tavan", function (contInputs) {
 
 use.a("print", function (contInputs) {
     console.log({
-        name: contInputs[1],
-        family: contInputs[2],
-        age: (use.parseInput(contInputs[3])),
-        email: contInputs[4] + '@gmail.com'
+        Name: contInputs[1],
+        Family: contInputs[2],
+        Age: (use.parseInput(contInputs[3])),
+        Email: contInputs[4] + '@gmail.com'
     });
 });
 
@@ -42,7 +42,6 @@ use.a("save2", function (contInputs) {
         one: contInputs[1],
         two: contInputs[2],
         three: contInputs[3],
-        four: contInputs[4]
     }
     fs.writeFile('myDatabase.txt', JSON.stringify(savedata), function (error) {
         if (error) {
@@ -88,47 +87,44 @@ use.a("open", function (contInputs) {
     })
 });
 
-use.a("saveobj", function (contInputs) {
-    fs.readFile(contInputs[1], function (error, data) {
+use.a('createjson', function (contInputs) {
+    let x = { "records": [] };
+    fs.writeFile('data.json', JSON.stringify(x), function (error) {
         if (error) {
-            if (error.code === "ENOENT") {
-                console.log(error.code, ": file or txt Not Found.");
-            }
-            else if (error.code === "EISDIR") {
-                console.log("Error: ", error.code);
-            }
-            else {
-                console.log("Error: ", error);
-            }
+            console.log({ result: "Cant Save File for: " + error.code });
         }
         else {
-            let ary = [];
+            console.log({ result: "Save File. " });
+        }
+    })
+});
 
-            let newObj = {
-                name: contInputs[3],
-                family: contInputs[4],
-                age: use.parseInput(contInputs[5])
-            }
-
-            let Previousdata = data.toString()
-            newObj = data.toString()
-            newObj = JSON.parse(newObj)
-
-            ary.push(Previousdata)
-            ary.push(newObj)
-
-            fs.writeFile(contInputs[2], JSON.stringify(ary), function (error) {
+use.a("addobj", function (contInputs) {
+    fs.readFile(contInputs[1], function (error, data) {
+        if (error) {
+            console.log({ result: "Cant Save File for: " + error.code });
+        }
+        else {
+            let getData = data.toString();
+            getData = JSON.parse(getData);
+            let newOBJ = [{
+                One: contInputs[3],
+                Two: contInputs[4],
+                Three: contInputs[5]
+            }]
+            newOBJ.push(getData)
+            let x = JSON.stringify(newOBJ);
+            fs.writeFile(contInputs[2], x, function (error) {
+                /* فایل حتما باید از نوع json باشد */
                 if (error) {
-                    console.log("ERROR:", error);
+                    console.log({ result: "Cant Save File for: " + error.code });
+
                 } else {
-                    console.log('Save Data.', ary);
+                    console.log({ result: 'Save Change.' + '| Data File: ' + x });
                 }
             })
         }
-    });
+    })
 });
-
-
-
 
 use.start();
