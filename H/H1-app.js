@@ -1,4 +1,4 @@
-let app = require('./G2-http');
+let app = require('./H1-http');
 let fs = require('fs')
 
 app.use('GET', '/test', function (request, response) {
@@ -169,8 +169,8 @@ app.use('POST', "/data", function (request, response) {
 
             fs.writeFile(request.data.name, x, function (error) {
                 if (error) {
-                    console.log("ERROR:", error.code);
-                    app.write(response, "ERROR");
+                    app.write(response, { result: "Cant write File for: " + error.code });
+                    console.log('request.method:', request.method, '| request.url:', request.url, '| Cant write File for:', error.code);
                 }
                 else {
                     console.log('Change File.', '| request.method:', request.method, '| request.url:', request.url, '| Data File: ', x);
@@ -194,6 +194,51 @@ app.use('GET', '/data2', function (request, response) {
         else {
             console.log('Open File.', 'Name File:', request.data.name, '| request.method:', request.method, '| request.url:', request.url, '| Data File: ', data.toString());
             app.write(response, { result: 'Name File:' + request.data.name + '| request.method:' + request.method + '| request.url:' + request.url + '| Data File: ' + data });
+        }
+    });
+});
+
+app.use('GET', '/id', function (request, response) {
+    fs.readFile('./DataBase.json', function (error, data) {
+        if (error) {
+            app.write(response, { result: "Cant read File for: " + error.code });
+            console.log('request.method:', request.method, '| request.url:', request.url, '| Cant read File for:', error.code);
+        }
+        else {
+            console.log('Open File.', 'Name File:', request.data.name, '| request.method:', request.method, '| request.url:', request.url, '| Data File: ', data.toString());
+            app.write(response, { result: 'Name File:' + request.data.name + '| request.method:' + request.method + '| request.url:' + request.url + '| Data File: ' + JSON.parse(data) });
+        }
+    })
+});
+
+app.use('GET', '/delete', function (request, response) {
+    fs.readFile('./DataBase.json', function (error, data) {
+        if (error) {
+            app.write(response, { result: "Cant read File for: " + error.code });
+            console.log('request.method:', request.method, '| request.url:', request.url, '| Cant read File for:', error.code);
+        }
+        else {
+
+            let obj = JSON.parse(data);
+            let i = 0;
+            for (item of obj.records) {
+                if (item.id === request.params[2]) {
+                    obj.records.splice(i, 1);
+                }
+                i++;
+            }
+
+            let string = JSON.stringify(obj);
+            fs.writeFile('./DataBase.json', string, function (error2) {
+                if (error2) {
+                    app.write(response, { result: "Cant write File for: " + error.code });
+                    console.log('request.method:', request.method, '| request.url:', request.url, '| Cant write File for:', error.code);
+                }
+                else {
+                    console.log('Change File.', '| request.method:', request.method, '| request.url:', request.url, '| Data File: ', string);
+                    app.write(response, { result: 'Change File.' + '| request.method:' + request.method + '| request.url:' + request.url + '| Data File: ' + string });
+                }
+            })
         }
     });
 });
