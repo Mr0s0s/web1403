@@ -101,8 +101,8 @@ app.use('GET', '/createjson', function (request, response) {
             console.log('request.method:', request.method, '| request.url:', request.url, '| Cant Save File for:', error.code);
         }
         else {
-            console.log('Save File.', '| request.method:', request.method, '| request.url:', request.url, '| NameFile:', request.path[2], '| File Data.', x);
-            app.write(response, { result: 'Save File.' + '| NameFile:' + request.path[2] + '| FileData: ' + JSON.stringify(x) });
+            console.log('Save File.', '| request.method:', request.method, '| request.url:', request.url, '| NameFile:', 'data.json', '| File Data.', x);
+            app.write(response, { result: 'Save File.' + '| NameFile:' + 'data.json' + '| FileData: ' + JSON.stringify(x) });
         }
     })
 });

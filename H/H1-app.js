@@ -102,7 +102,7 @@ app.use('GET', '/createjson', function (request, response) {
         }
         else {
             console.log('Save File.', '| request.method:', request.method, '| request.url:', request.url, '| NameFile:', request.path[2], '| File Data.', x);
-            app.write(response, { result: 'Save File.' + '| NameFile:' + request.path[2] + '| FileData: ' + JSON.stringify(x) });
+            app.write(response, { result: 'Save File.' + '| NameFile:' + 'data.json' + '| FileData: ' + JSON.stringify(x) });
         }
     })
 });
@@ -211,7 +211,21 @@ app.use('GET', '/id', function (request, response) {
     })
 });
 
-app.use('GET', '/delete', function (request, response) {
+app.use('GET', '/create-id-for-delete', function (request, response) {
+    let x = { "records": [{ "id": 1, "content": { "aaa": 1 } }, { "id": 2, "content": { "bbb": 2 } }, { "id": 3, "content": { "ccc": 3 } }, { "id": 4, "content": { "dddd": 4 } }, { "id": 5, "content": { "eee": 5 } }] };
+    fs.writeFile('json-for-delete.json', JSON.stringify(x), function (error) {
+        if (error) {
+            app.write(response, { result: "Cant Save File for: " + error.code });
+            console.log('request.method:', request.method, '| request.url:', request.url, '| Cant Save File for:', error.code);
+        }
+        else {
+            console.log('Save File.', '| request.method:', request.method, '| request.url:', request.url, '| NameFile:', 'jsonfordelete.json', '| File Data.', JSON.stringify(x));
+            app.write(response, { result: 'Save File.' + '| NameFile:' + request.path[2] + '| FileData: ' + JSON.stringify(x) });
+        }
+    })
+});
+
+app.use('DELETE', '/delete', function (request, response) {
     fs.readFile('./DataBase.json', function (error, data) {
         if (error) {
             app.write(response, { result: "Cant read File for: " + error.code });
@@ -219,18 +233,18 @@ app.use('GET', '/delete', function (request, response) {
         }
         else {
 
-            let obj = JSON.parse(data);
+            let getData = JSON.parse(data);
             let i = 0;
-            for (item of obj.records) {
-                if (item.id === request.params[2]) {
-                    obj.records.splice(i, 1);
+            for (item of getData.records) {
+                if (item.id === request.path[2]) {
+                    getData.records.splice(i, 1);
                 }
                 i++;
             }
 
-            let string = JSON.stringify(obj);
-            fs.writeFile('./DataBase.json', string, function (error2) {
-                if (error2) {
+            let string = JSON.stringify(getData);
+            fs.writeFile('./DataBase.json', string, function (error) {
+                if (error) {
                     app.write(response, { result: "Cant write File for: " + error.code });
                     console.log('request.method:', request.method, '| request.url:', request.url, '| Cant write File for:', error.code);
                 }
