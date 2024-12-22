@@ -21,6 +21,7 @@ function sum(request, response) {
     console.log('request.method:', request.method, '| request.url:', request.url, '| result.equal:', (request.path[2]), "+", (request.path[3]), '=', result.equal);
     app.write(response, result)
 };
+
 app.use('GET', '/multiply', multiply);
 app.use('POST', '/multiply', multiply);
 function multiply(request, response) {
@@ -226,12 +227,29 @@ app.use('GET', '/file', function (request, response) {
 
 app.use('GET', '/page', function (request, response) {
     console.log('request.method:', request.method, '| request.url:', request.url);
-    console.log('Hello world!', '    |txt|', '    |x = 1|');
-    app.write(response, {
-        text: 'Hello world!',
-        txt: 'txt',
-        x: 'x = 1'
-    });
+    console.log('Hello world!', '    |txt|', '    |Value = its_Ok|');
+    app.write(response, 'Hello world!', 'txt', 'Value = its_Ok'
+        //Look Postman Cookies
+    );
+});
+
+app.use('GET', '/create_login', function (request, response) {
+    let a = { "records": [{ "user": "amir", "pass": "123" }, { "user": "shadmehr", "pass": "1234" }, { "user": "shayan", "pass": "12345" }, { "user": "armin", "pass": "123456" }, { "user": "sadegh", "pass": "1234567" }] }
+    fs.writeFile('users.json', JSON.stringify(a), function (error) {
+        if (error) {
+            console.log('request.method:', request.method, '| request.url:', request.url, '| Cant write File for:', error.code);
+            app.write(response, { result: "Cant write File for: " + error.code });
+        } else {
+            console.log('write File.', '| request.method:', request.method, '| request.url:', request.url);
+            console.log('Data File:', JSON.stringify(a));
+            app.write(response, {
+                result: 'write File.',
+                method: request.method,
+                url: request.url,
+                DataFile: a
+            });
+        }
+    })
 });
 
 app.use('POST', '/login', function (request, response) {
