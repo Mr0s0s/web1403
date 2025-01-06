@@ -168,7 +168,7 @@ app.use('PUT', '/data', function (request, response) {
                     }
                     else {
                         console.log('write File.', '| request.method:', request.method, '| request.url:', request.url);
-                        console.log('Data File:', string.toString());
+                        console.log('Data File:', string);
                         app.write(response, {
                             result: 'write File.',
                             method: request.method,
@@ -211,7 +211,11 @@ app.use('GET', '/file', function (request, response) {
             let extt = request.path[2].split('.')[0];
 
             console.log('read File.', '| request.method:', request.method, '| request.url:', request.url);
-            console.log('ext:', ext);
+            console.log({
+                Namefull: extt + '.' + ext,
+                Namefile_extt: extt,
+                Fileextension_ext: ext
+            });
 
             app.write(response, {
                 result: 'read File.',
@@ -227,8 +231,8 @@ app.use('GET', '/file', function (request, response) {
 
 app.use('GET', '/page', function (request, response) {
     console.log('request.method:', request.method, '| request.url:', request.url);
-    console.log('Hello world!', '    |txt|', '    |Value = its_Ok|');
-    app.write(response, 'Hello world!', 'txt', 'Value = its_Ok');
+    console.log('Hello world!', '   |txt|', '   | Value = its_Ok |');
+    app.write(response, { text: 'Hello world!', Cookies_name: 'Value', data_Cookies: 'its_Ok' }, 'txt', 'Value = its_Ok');
     //Look Postman Cookies
 });
 
@@ -251,7 +255,7 @@ app.use('GET', '/create_login', function (request, response) {
     })
 });
 
-app.use('POST', '/login', function (request, response) {
+app.use('GET', '/login', function (request, response) {
     function getArrayIndex(array, user, pass) {
         for (let i = 0; i < array.length; i++) {
             if (array[i].user === user && array[i].pass === pass) {
@@ -260,13 +264,13 @@ app.use('POST', '/login', function (request, response) {
         }
         return -1;
     }
-    fs.readFile('./users.json', function (error, fileData) {
+    fs.readFile('./users.json', function (error, data) {
         if (error) {
             console.log('request.method:', request.method, '| request.url:', request.url, '| Cant read File for:', error.code);
             app.write(response, { result: "Cant read File for: " + error.code });
         }
         else {
-            let obj = JSON.parse(fileData);
+            let obj = JSON.parse(data);
             let i = getArrayIndex(obj.records, request.data.user, request.data.pass);
             if (i < 0) {
                 console.log('User NOT Found.', '| request.method:', request.method, '| request.url:', request.url);
@@ -286,7 +290,7 @@ app.use('POST', '/login', function (request, response) {
     });
 });
 
-app.use('POST', '/random_cookies', function (request, response) {
+app.use('POST', '/login', function (request, response) {
     function getArrayIndex(array, user, pass) {
         for (let i = 0; i < array.length; i++) {
             if (array[i].user === user && array[i].pass === pass) {

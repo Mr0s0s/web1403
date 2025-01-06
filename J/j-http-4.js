@@ -1,7 +1,8 @@
 let http = require('http');
+let fs = require('fs');
 let controllers = [];
 
-function write(response, body, ext, cookie) {    
+function write(res, body, ext, cookie) {
     if (!ext) {
         ext = 'json';
     }
@@ -12,18 +13,49 @@ function write(response, body, ext, cookie) {
         'json': 'application/json'
     }
     if (!cookie) {
-        response.writeHead(200, {
+        res.writeHead(200, {
             'Content-Type': types[ext]
         });
     }
     else {
-        response.writeHead(200, {
+        res.writeHead(200, {
             'Content-Type': types[ext],
             'Set-Cookie': cookie
         });
     }
-    response.write(JSON.stringify(body));
-    response.end();
+    res.write(body);
+    res.end();
+}
+
+function checkUser(userToken, callback) {
+    fs.readFile('./users.json', function (error, data) {
+        if (error) {
+            console.log('readFile FAIL', error);
+            callback(false);
+        } else {
+            let obj = JSON.parse(data);
+            let user = obj.records.find(record => record.token === userToken);
+            if (user) {
+                if (Date.now() > user.tokenExpiration) {
+                    callback(false);
+                } else {
+                    callback(true);
+                }
+            } else {
+                callback(false);
+            }
+        }
+    });
+}
+
+function parseCookie(string) {
+    if (!string) return null;
+    let cookies = {};
+    string.split(';').forEach(cookie => {
+        let parts = cookie.split('=');
+        cookies[parts[0].trim()] = parts[1];
+    });
+    return cookies;
 }
 
 function use(method, name, func) {
@@ -58,10 +90,10 @@ function start() {
         request.path = request.url.split('/');
 
         let data = '';
-        request.on('data', function (chunck) {
-            data = data + chunck;
+        request.on('data', function (chunk) {
+            data = data + chunk;
         })
-        request.on('end', function (chunck) {
+        request.on('end', function () {
             try {
                 request.data = JSON.parse(data);
             }
@@ -78,4 +110,6 @@ module.exports = {
     use: use,
     start: start,
     write: write,
+    checkUser: checkUser,
+    parseCookie: parseCookie
 }

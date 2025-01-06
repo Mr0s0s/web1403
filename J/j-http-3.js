@@ -53,6 +53,7 @@ function checkUser(userToken, callback, write) {
         }
     });
 }
+
 function parseCookie(string) {
     return string.split('=')[1];
 }
@@ -92,7 +93,7 @@ function start() {
         request.on('data', function (chunck) {
             data = data + chunck;
         })
-        request.on('end', function (chunck) {
+        request.on('end', function () {
             try {
                 request.data = JSON.parse(data);
             }
@@ -110,5 +111,5 @@ module.exports = {
     start: start,
     write: write,
     checkUser: checkUser,
-    parseCookie:parseCookie
+    parseCookie: parseCookie
 }

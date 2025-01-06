@@ -1,8 +1,9 @@
-let app = require('./j-http-3');
+let app = require('./j-http-4');
 let fs = require('fs');
 
 app.use('GET', '/test', function (request, response) {
-    function check(found) {
+    const cookies = request.headers.cookie;
+    app.checkUser(cookies.token, function (found) {
         if (found) {
             result = {
                 method: request.method,
@@ -15,14 +16,14 @@ app.use('GET', '/test', function (request, response) {
             app.write(response, "User not found.", "txt");
             console.log('result: User not found.');
         }
-    }
-    app.checkUser(app.parseCookie(request.headers.cookie), check);
+    });
 });
 
 app.use('GET', '/sum', sum);
 app.use('POST', '/sum', sum);
 function sum(request, response) {
-    function check(found) {
+    const cookies = request.headers.cookie;
+    app.checkUser(cookies.token, function (found) {
         if (found) {
             result = {
                 method: request.method,
@@ -36,14 +37,14 @@ function sum(request, response) {
             app.write(response, "User not found.", "txt");
             console.log('result: User not found.');
         }
-    }
-    app.checkUser(app.parseCookie(request.headers.cookie), check);
+    });
 };
 
 app.use('GET', '/multiply', multiply);
 app.use('POST', '/multiply', multiply);
 function multiply(request, response) {
-    function check(found) {
+    const cookies = request.headers.cookie;
+    app.checkUser(cookies.token, function (found) {
         if (found) {
             result = {
                 method: request.method,
@@ -57,14 +58,14 @@ function multiply(request, response) {
             app.write(response, "User not found.", "txt");
             console.log('result: User not found.');
         }
-    }
-    app.checkUser(app.parseCookie(request.headers.cookie), check);
+    });
 };
 
-app.use('GET', '/print', print)
-app.use('POST', '/print', print)
+app.use('GET', '/print', print);
+app.use('POST', '/print', print);
 function print(request, response) {
-    function check(found) {
+    const cookies = request.headers.cookie;
+    app.checkUser(cookies.token, function (found) {
         if (found) {
             result = {
                 One: request.path[2],
@@ -77,12 +78,12 @@ function print(request, response) {
             app.write(response, "User not found.", "txt");
             console.log('result: User not found.');
         }
-    }
-    app.checkUser(app.parseCookie(request.headers.cookie), check);
+    });
 };
 
 app.use('POST', '/file', function (request, response) {
-    function check(found) {
+    const cookies = request.headers.cookie;
+    app.checkUser(cookies.token, function (found) {
         if (found) {
             fs.writeFile(request.data.name, request.data.content, function (error) {
                 if (error) {
@@ -102,12 +103,12 @@ app.use('POST', '/file', function (request, response) {
             app.write(response, "User not found.", "txt");
             console.log('result: User not found.');
         }
-    }
-    app.checkUser(app.parseCookie(request.headers.cookie), check);
+    });
 });
 
 app.use('GET', '/create_database', function (request, response) {
-    function check(found) {
+    const cookies = request.headers.cookie;
+    app.checkUser(cookies.token, function (found) {
         if (found) {
             let a = { "records": [{ "id": 1, "content": { "aaa": 11 } }, { "id": 2, "content": { "bbb": 22 } }, { "id": 3, "content": { "ccc": 333 } }, { "id": 4, "content": { "ddd": 444 } }, { "id": 5, "content": { "eee": 555 } }] }
             fs.writeFile('database.json', JSON.stringify(a), function (error) {
@@ -125,12 +126,12 @@ app.use('GET', '/create_database', function (request, response) {
             app.write(response, "User not found.", "txt");
             console.log('result: User not found.');
         }
-    }
-    app.checkUser(app.parseCookie(request.headers.cookie), check);
+    });
 });
 
 app.use('POST', '/data', function (request, response) {
-    function check(found) {
+    const cookies = request.headers.cookie;
+    app.checkUser(cookies.token, function (found) {
         if (found) {
             fs.readFile('./database.json', function (error, data) {
                 if (error) {
@@ -159,12 +160,12 @@ app.use('POST', '/data', function (request, response) {
             app.write(response, "User not found.", "txt");
             console.log('result: User not found.');
         }
-    }
-    app.checkUser(app.parseCookie(request.headers.cookie), check);
+    });
 });
 
 app.use('GET', '/data', function (request, response) {
-    function check(found) {
+    const cookies = request.headers.cookie;
+    app.checkUser(cookies.token, function (found) {
         if (found) {
             fs.readFile('./database.json', function (error, data) {
                 if (error) {
@@ -182,12 +183,12 @@ app.use('GET', '/data', function (request, response) {
             app.write(response, "User not found.", "txt");
             console.log('result: User not found.');
         }
-    }
-    app.checkUser(app.parseCookie(request.headers.cookie), check);
+    })
 });
 
 app.use('PUT', '/data', function (request, response) {
-    function check(found) {
+    const cookies = request.headers.cookie;
+    app.checkUser(cookies.token, function (found) {
         if (found) {
             function getArrayIndex(array, id) {
                 for (let i = 0; i < array.length; i++) {
@@ -235,12 +236,12 @@ app.use('PUT', '/data', function (request, response) {
             app.write(response, "User not found.", "txt");
             console.log('result: User not found.');
         }
-    }
-    app.checkUser(app.parseCookie(request.headers.cookie), check);
+    })
 });
 
 app.use('GET', '/image', function (request, response) {
-    function check(found) {
+    const cookies = request.headers.cookie;
+    app.checkUser(cookies.token, function (found) {
         if (found) {
             fs.readFile(request.path[2], function (error, data) {
                 if (error) {
@@ -262,12 +263,12 @@ app.use('GET', '/image', function (request, response) {
             app.write(response, "User not found.", "txt");
             console.log('result: User not found.');
         }
-    }
-    app.checkUser(app.parseCookie(request.headers.cookie), check);
+    })
 });
 
 app.use('GET', '/file', function (request, response) {
-    function check(found) {
+    const cookies = request.headers.cookie;
+    app.checkUser(cookies.token, function (found) {
         if (found) {
             fs.readFile(request.path[2], function (error, data) {
                 if (error) {
@@ -288,12 +289,12 @@ app.use('GET', '/file', function (request, response) {
             app.write(response, "User not found.", "txt");
             console.log('result: User not found.');
         }
-    }
-    app.checkUser(app.parseCookie(request.headers.cookie), check);
+    })
 });
 
 app.use('GET', '/page', function (request, response) {
-    function check(found) {
+    const cookies = request.headers.cookie;
+    app.checkUser(cookies.token, function (found) {
         if (found) {
             console.log('request.method:', request.method, '| request.url:', request.url);
             console.log('Hello world!', '    |txt|', '    | Value = its_Ok|');
@@ -304,15 +305,15 @@ app.use('GET', '/page', function (request, response) {
             app.write(response, "User not found.", "txt");
             console.log('result: User not found.');
         }
-    }
-    app.checkUser(app.parseCookie(request.headers.cookie), check);
+    })
 });
 
 app.use('GET', '/create_login', function (request, response) {
-    function check(found) {
+    const cookies = request.headers.cookie;
+    app.checkUser(cookies.token, function (found) {
         if (found) {
             let a = { "records": [{ "user": "amir", "pass": "123" }, { "user": "shadmehr", "pass": "1234" }, { "user": "shayan", "pass": "12345" }, { "user": "armin", "pass": "123456" }, { "user": "sadegh", "pass": "1234567" }] }
-            fs.writeFile('users.json', JSON.stringify(a), function (error) {
+            fs.writeFile('userss.json', JSON.stringify(a), function (error) {
                 if (error) {
                     console.log('request.method:', request.method, '| request.url:', request.url, '| Cant write File for:', error.code);
                     app.write(response, { result: "Cant write File for: " + error.code });
@@ -327,8 +328,7 @@ app.use('GET', '/create_login', function (request, response) {
             app.write(response, "User not found.", "txt");
             console.log('result: User not found.');
         }
-    }
-    app.checkUser(app.parseCookie(request.headers.cookie), check);
+    })
 });
 
 app.use('POST', '/Sign_up', function (request, response) {
@@ -399,53 +399,42 @@ app.use('PUT', '/Sign_up', function (request, response) {
 
 app.use('POST', '/login', function (request, response) {
     function getArrayIndex(array, user, pass) {
-        for (let i = 0; i < array.length; i++) {
-            if (array[i].user === user && array[i].pass === pass) {
-                return i;
-            }
-        }
-        return -1;
+        return array.findIndex(record => record.user === user && record.pass === pass);
     }
 
     function getRandomInt(max) {
         return Math.floor(Math.random() * max);
     }
 
-    fs.readFile('./users.json', { encoding: 'utf8' }, function (error, data) {
+    fs.readFile('./users.json', { encoding: 'utf8' }, function (error, fileData) {
         if (error) {
-            console.log('request.method:', request.method, '| request.url:', request.url, '| Cant read File for:', error.code);
-            app.write(response, "Cant read File for Error: " + error.code);
-        }
-        else {
-            let obj = JSON.parse(data);
+            console.log('readFile FAIL', error);
+            app.write(response, { status: "readFile FAIL" });
+        } else {
+            let obj = JSON.parse(fileData);
             let i = getArrayIndex(obj.records, request.data.user, request.data.pass);
             if (i < 0) {
-                console.log('User NOT Found.', '| request.method:', request.method, '| request.url:', request.url);
-                console.log('');
-                console.log('Change user or password.');
-                console.log('user:', request.data.user, '| password:', request.data.pass);
-                app.write(response, "User not Found | Change user or password." + ' | user:' + request.data.user + ' | password:' + request.data.pass, 'txt');
-            }
-            else {
+                app.write(response, "User not found.", "txt");
+            } else {
                 let token = getRandomInt(100000000000).toString();
+                // let tokenExpiration = Date.now() + 24 * 60 * 60 * 1000;
+                // 24 ساعت
+                let tokenExpiration = Date.now() + 1 * 60 * 1000;
+                // 1 دقیقه
                 obj.records[i].token = token;
-                fs.writeFile('./users.json', JSON.stringify(obj), function (error) {
-                    if (error) {
-
-                        console.log('request.method:', request.method, '| request.url:', request.url, '| Cant write File for Error:', error.code);
-                        app.write(response, { result: "Cant write File for Error: " + error.code });
+                obj.records[i].tokenExpiration = tokenExpiration;
+                let string = JSON.stringify(obj);
+                fs.writeFile('./users.json', string, function (error2) {
+                    if (error2) {
+                        console.log('writeFile FAIL', error);
+                        app.write(response, { status: "writeFile FAIL" });
+                    } else {
+                        app.write(response, "Login Done.", "txt", "Token =" + token + "; HttpOnly; Max-Age=86400");
                     }
-                    else {
-                        console.log('Login Done.', '| request.method:', request.method, '| request.url:', request.url);
-                        console.log('');
-                        console.log('User information.');
-                        console.log('user:', request.data.user, '| password:', request.data.pass);
-                        app.write(response, "Login Done." + ' | user:' + request.data.user + " | password:" + request.data.pass, 'txt', 'Token = ' + token);
-                    }
-                })
+                });
             }
         }
-    });
+    })
 });
 
 app.start();
