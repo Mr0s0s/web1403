@@ -333,7 +333,7 @@ app.use('GET', '/create_login', function (request, response) {
 });
 
 app.use('POST', '/Sign_up', function (request, response) {
-    fs.readFile('./users.json', function (error, data) {
+    fs.readFile('./user.json', function (error, data) {
         if (error) {
             console.log('request.method:', request.method, '| request.url:', request.url, '| Cant read File for:', error.code);
             app.write(response, { result: "Cant read File for: " + error.code });
@@ -342,7 +342,7 @@ app.use('POST', '/Sign_up', function (request, response) {
             let getData = JSON.parse(data);
             getData.records.push(request.data);
             let string = JSON.stringify(getData);
-            fs.writeFile('./users.json', string, function (error) {
+            fs.writeFile('./user.json', string, function (error) {
                 if (error) {
                     console.log('request.method:', request.method, '| request.url:', request.url, '| Cant write New user for:', error.code);
                     app.write(response, { result: "Cant write New user for:: " + error.code });
@@ -358,30 +358,31 @@ app.use('POST', '/Sign_up', function (request, response) {
 });
 
 app.use('PUT', '/Sign_up', function (request, response) {
-    function getArrayIndex(array, user) {
+    function getArrayIndex(array, number) {
         for (let i = 0; i < array.length; i++) {
-            if (array[i].user === user) {
+            if (array[i].number === number) {
                 return i;
             }
         }
         return -1;
     }
-    fs.readFile('./users.json', function (error, data) {
+    fs.readFile('./user.json', function (error, data) {
         if (error) {
             console.log('request.method:', request.method, '| request.url:', request.url, '| Cant read File for:', error.code);
             app.write(response, { result: "Cant read File for: " + error.code });
         }
         else {
             let obj = JSON.parse(data);
-            let i = getArrayIndex(obj.records, request.data.user);
+            let i = getArrayIndex(obj.records, request.data.number);
             if (i < 0) {
-                console.log('NOT have in user.', '| request.method:', request.method, '| request.url:', request.url);
-                app.write(response, 'NOT have in user.');
+                console.log('NOT have in number.', '| request.method:', request.method, '| request.url:', request.url);
+                app.write(response, 'NOT have in number.');
             }
             else {
                 obj.records[i].pass = request.data.pass;
+                obj.records[i].user = request.data.user;
                 let string = JSON.stringify(obj);
-                fs.writeFile('./users.json', string, function (error) {
+                fs.writeFile('./user.json', string, function (error) {
                     if (error) {
                         console.log('request.method:', request.method, '| request.url:', request.url, '| Cant write File for:', error.code);
                         app.write(response, { result: "Cant write File for: " + error.code });
@@ -406,16 +407,17 @@ app.use('POST', '/login', function (request, response) {
         return Math.floor(Math.random() * max);
     }
 
-    fs.readFile('./users.json', function (error, data) {
+    fs.readFile('./user.json', function (error, data) {
         if (error) {
             console.log('readFile FAIL', error);
             app.write(response, { status: "readFile FAIL" });
         } else {
             let obj = JSON.parse(data);
-            let i = getArrayIndex(obj.records, request.data.user, request.data.pass);
+            let i = getArrayIndex(obj.records, request.data.user, request.data.pass, request.data.number);
             if (i < 0) {
                 app.write(response, "User not found.", "txt");
                 console.log('User not found.', '| request.method:', request.method, '| request.url:', request.url);
+
             } else {
                 let token = getRandomInt(100000000000).toString();
                 // let tokenExpiration = Date.now() + 24 * 60 * 60 * 1000;
@@ -425,16 +427,16 @@ app.use('POST', '/login', function (request, response) {
                 obj.records[i].token = token;
                 obj.records[i].tokenExpiration = tokenExpiration;
                 let string = JSON.stringify(obj);
-                fs.writeFile('./users.json', string, function (error) {
+                fs.writeFile('./user.json', string, function (error) {
                     if (error) {
                         console.log('writeFile FAIL', error);
                         app.write(response, { status: "writeFile FAIL" });
                     } else {
-                        app.write(response, "Login Done.", "txt", "Token =" + token + "; HttpOnly; Max-Age=60");
-                        // app.write(response, "Login Done.", "txt", "Token =" + token + "; HttpOnly; Max-Age=86400");
+                        app.write(response, "Login Done.", "txt", "Token = " + token + "; HttpOnly; Max-Age=60");
+                        // app.write(response, "Login Done.", "txt", "Token = " + token + "; HttpOnly; Max-Age=86400"); برای 24 ساعت
                         console.log("Login Done.", "txt", "Token = " + token);
                     }
-                })
+                });
             }
         }
     })

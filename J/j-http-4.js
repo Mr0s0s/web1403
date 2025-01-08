@@ -111,5 +111,5 @@ module.exports = {
     start: start,
     write: write,
     checkUser: checkUser,
-    parseCookie: parseCookie
+    parseCookie: parseCookie,
 }

@@ -72,6 +72,7 @@ function print(request, response) {
                 Three: request.path[4]
             }
             app.write(response, JSON.stringify(result));
+            console.log('result: ', result);
         }
         else {
             app.write(response, "User not found.", "txt");
